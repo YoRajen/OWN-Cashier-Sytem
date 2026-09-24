@@ -1,0 +1,161 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+span, label, input, select, button {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.products_container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 20px;
+
+    justify-content: center;
+}
+
+.product_card {
+    border: 1px solid #c3c3c3;
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    align-items: center;
+    border-radius: 8px;
+    padding: 16px;
+    width: 250px;
+    height: 100px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: white;
+}
+
+.product_info,
+.product_stock {
+    display: flex;
+    flex-direction: column;
+}
+
+.product_name {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product_stock {
+    align-items: center;
+    text-align: center;
+    border-left: 1px solid #c3c3c3;
+    padding-left: 15px;
+    height: 100%;
+    gap: 12px;
+}
+
+.stock_count {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.top_bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(150, 150, 150);
+
+    padding: 20px;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+}
+
+.add_product,
+.back_btn {
+    width: 100px;
+    height: 50px;
+    background-color: #39a315;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+}
+
+.back_btn {
+    background-color: #414141;
+}
+
+.add_product:hover, 
+.back_btn:hover{
+    background-color: #47b518;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transition-duration: 0.1s;
+}   
+
+.back_btn:hover {
+    background-color: #4c4c4c;
+}
+
+.add_product:active,
+.back_btn:active {
+    scale: 0.98;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition-duration: 0.1s;
+}
+
+.form_container {
+    display: grid;
+    grid-template-columns: 1;
+    justify-content: center;
+    margin: 20px;
+}
+
+.form_card {
+    border: 1px solid black;
+    border-radius: 8px;
+
+    padding: 10px;
+}
+
+.form_item {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0px;
+}
+
+.form_item input,
+.form_item select,
+.form_item button {
+    padding: 10px;
+    border: 1px solid #c3c3c3;
+    border-radius: 8px;
+}
+
+.form_item button {
+    background-color: #39a315;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition-duration: 0.1s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+    margin-top: 10px;
+}
+
+.form_item button:hover {
+    background-color: #47b518;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transition-duration: 0.1s;
+}
+
+.form_item button:active {
+    scale: 0.98;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition-duration: 0.1s;
+}
