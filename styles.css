@@ -1,69 +1,24 @@
+*, *::before, *::after {
+    box-sizing: border-box;         /* Includes padding and borders in total width and height calculations */
+}
+
 html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
+    margin: 0;                      /* Removes default browser page margin */
+    padding: 0;                     /* Removes default browser page padding */
+    width: 100%;                    /* Makes the page take up 100% of the viewport width */
 }
 
 span, label, input, select, button {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif; /* Sets a standard sans-serif font across text and form elements */
 }
 
-.products_container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    padding: 20px;
-
-    justify-content: center;
-}
-
-.product_card {
-    border: 1px solid #c3c3c3;
-    display: flex;
-    justify-content: space-between;
-    gap: 25px;
-    align-items: center;
-    border-radius: 8px;
-    padding: 16px;
-    width: 250px;
-    height: 100px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background: white;
-}
-
-.product_info,
-.product_stock {
-    display: flex;
-    flex-direction: column;
-}
-
-.product_name {
-    font-size: 25px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.product_stock {
-    align-items: center;
-    text-align: center;
-    border-left: 1px solid #c3c3c3;
-    padding-left: 15px;
-    height: 100%;
-    gap: 12px;
-}
-
-.stock_count {
-    font-size: 40px;
-    font-weight: bold;
-}
-
+/* --- TOP BAR --- */
 .top_bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex;                  /* Arranges title and button horizontally in a row */
+    justify-content: space-between; /* Pushes the title to the far left and the action button to the far right */
+    align-items: center;            /* Centers title and button vertically */
     background-color: rgb(150, 150, 150);
-
-    padding: 20px;
+    padding: 20px;                  /* Inner spacing around the top bar contents */
 }
 
 .title {
@@ -77,10 +32,9 @@ span, label, input, select, button {
     width: 100px;
     height: 50px;
     background-color: #39a315;
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-
+    cursor: pointer;                /* Changes mouse cursor to a pointer hand on hover */
+    border: none;                   /* Removes default browser button border */
+    border-radius: 10px;            /* Rounds button corners */
     font-size: 15px;
     font-weight: bold;
     color: white;
@@ -93,7 +47,7 @@ span, label, input, select, button {
 .add_product:hover, 
 .back_btn:hover{
     background-color: #47b518;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Adds a pronounced drop shadow on hover for depth */
     transition-duration: 0.1s;
 }   
 
@@ -103,37 +57,145 @@ span, label, input, select, button {
 
 .add_product:active,
 .back_btn:active {
-    scale: 0.98;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    scale: 0.98;                    /* Slight shrink press-down effect when clicked */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduces shadow on click to simulate being pressed */
     transition-duration: 0.1s;
 }
 
+/* --- MAIN CONTAINER --- */
+.main_container {
+    display: flex;                  /* Places products container and checkout container side-by-side horizontally */
+    justify-content: space-between; /* Pushes products to the left and checkout to the right */
+    gap: 20px;                      /* Adds 20px of space between the products and checkout sections */
+    padding: 20px;                  /* Adds 20px inner spacing around the main container so content doesn't touch screen edges */
+}
+
+/* --- PRODUCT LIST --- */
+.products_container {
+    flex: 1;                       /* Takes up all remaining horizontal space next to checkout */
+    display: grid;                 /* Uses CSS Grid for structured 2D rows and columns */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Creates as many 200px+ columns as fit, expanding equally (1fr) to fill the width */
+    gap: 16px;                     /* Uniform 16px space between cards horizontally and vertically */
+    align-content: flex-start;     /* Packs rows starting from the top, preventing rows from stretching vertically */
+    border: 1px solid #c3c3c3;
+    border-radius: 8px;            /* Rounded product container corners */
+    padding: 16px;                 /* Inner spacing between container border and the product cards */
+}
+
+.product_card {
+    border: 1px solid #c3c3c3;
+    display: flex;                 /* Uses Flexbox inside each card to place info (left) and stock (right) side-by-side */
+    justify-content: space-between;/* Pushes product info to the left and stock counter to the right */
+    gap: 16px;                     /* Minimum 16px space between product info and stock counter */
+    align-items: center;           /* Centers product info and stock counter vertically inside the card */
+    border-radius: 8px;            /* Rounds card corners */
+    padding: 14px 16px;            /* Inner spacing inside the card (14px top/bottom, 16px left/right) */
+    height: 105px;                 /* Sets an identical fixed height for every card */
+    min-width: 0;                  /* Allows card content to shrink properly within grid cells without overflowing */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow beneath the card to create a raised effect */
+    background: white;
+}
+
+.product_info {
+    display: flex;                  /* Uses Flexbox to arrange product name and price vertically */
+    flex-direction: column;         /* Stacks product name on top of product price */
+    justify-content: center;        /* Centers the product name and price vertically in the card */
+    min-width: 0;                   /* Overrides default flex min-width: auto so child text can shrink and wrap */
+    flex: 1;                        /* Takes up all available space to the left of the stock column */
+    overflow: hidden;               /* Clips any text overflowing outside the info area */
+}
+
+.product_stock {
+    display: flex;                  /* Uses Flexbox to align 'Stock' title and count number vertically */
+    flex-direction: column;         /* Stacks 'Stock' label above the quantity number */
+    align-items: center;            /* Centers stock title and number horizontally */
+    justify-content: center;        /* Centers stock title and number vertically */
+    text-align: center;             /* Centers text alignment */
+    border-left: 1px solid #c3c3c3; /* Vertical separator line between product info and stock */
+    padding-left: 14px;             /* Spacing between vertical separator line and stock content */
+    flex-shrink: 0;                 /* Prevents the stock section from getting compressed when card shrinks */
+    gap: 4px;                       /* Small 4px gap between 'Stock' label and quantity count */
+    height: 100%;                   /* Extends the vertical separator line across the full card height */
+}
+
+.product_name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 6px;             /* Spacing between product name and price */
+    line-height: 1.25;              /* Tight line height to prevent multi-line titles from overflowing */
+    display: -webkit-box;           /* Enables multi-line flexbox truncation mode */
+    -webkit-line-clamp: 2;          /* Limits product name display to at most 2 lines */
+    -webkit-box-orient: vertical;   /* Sets vertical orientation for line clamping */
+    overflow: hidden;               /* Hides any text exceeding the 2 allowed lines */
+    text-overflow: ellipsis;        /* Adds '...' at the end of truncated text */
+}
+
+.product_price {
+    font-size: 15px;
+    color: #444;
+    font-weight: 600;               /* Semi-bold text weight */
+}
+
+.stock_title {
+    font-size: 13px;
+    color: #666;
+}
+
+.stock_count {
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1;                 /* Compact line height to prevent vertical overflow */
+}
+
+/* --- CHECKOUT --- */
+.checkout_container {
+    border: 1px solid #c3c3c3;
+    border-radius: 8px;             /* Rounds checkout container corners */
+    padding: 16px;                  /* Inner spacing inside checkout container */
+    width: 30vw;                    /* Width takes 30% of viewport width on desktop */
+    min-width: 260px;               /* Prevents checkout from shrinking below 260px */
+    min-height: 100px;              /* Minimum height for the checkout box */
+    height: fit-content;            /* Height expands dynamically based on cart items inside */
+    background: white;
+}
+
+@media (max-width: 768px) {
+    .main_container {
+        flex-direction: column;     /* Stacks product catalog and checkout vertically on mobile/tablet */
+    }
+
+    .checkout_container {
+        width: 100%;                /* Expands checkout box to full width when stacked */
+    }
+}
+
+/* --- FORM PRODUCT --- */
 .form_container {
-    display: grid;
-    grid-template-columns: 1;
-    justify-content: center;
-    margin: 20px;
+    display: grid;                  /* Uses CSS Grid for form layout */
+    grid-template-columns: 1;       /* Single column layout */
+    justify-content: center;        /* Centers form card horizontally on the page */
+    margin: 20px;                   /* Outer margin spacing around the form area */
 }
 
 .form_card {
     border: 1px solid black;
-    border-radius: 8px;
+    border-radius: 8px;             /* Rounded corners */
 
     padding: 10px;
 }
 
 .form_item {
-    display: flex;
-    flex-direction: column;
-    margin: 10px 0px;
+    display: flex;                  /* Flexbox to arrange label and input field vertically */
+    flex-direction: column;         /* Stacks label on top of input field */
+    margin: 10px 0px;               /* 10px vertical margin between each form item */
 }
 
 .form_item input,
 .form_item select,
 .form_item button {
-    padding: 10px;
+    padding: 10px;                  /* Comfortable inner padding inside input, select, and button */
     border: 1px solid #c3c3c3;
-    border-radius: 8px;
+    border-radius: 8px;             /* Rounds input, select, and button corners */
 }
 
 .form_item button {
@@ -141,21 +203,21 @@ span, label, input, select, button {
     color: white;
     font-weight: bold;
     border: none;
-    cursor: pointer;
+    cursor: pointer;                /* Shows pointer hand cursor on hover */
     transition-duration: 0.1s;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Subtle drop shadow for button depth */
 
-    margin-top: 10px;
+    margin-top: 10px;               /* Extra 10px spacing above the submit button */
 }
 
 .form_item button:hover {
     background-color: #47b518;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger drop shadow on hover for elevated effect */
     transition-duration: 0.1s;
 }
 
 .form_item button:active {
-    scale: 0.98;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    scale: 0.98;                    /* Slight shrink effect when button is clicked */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Flattens shadow on click for tactile feedback */
     transition-duration: 0.1s;
 }

@@ -24,7 +24,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cashier App</title>
+    <title>OWN Cashier</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -33,24 +33,42 @@ $result = $conn->query($sql);
         <span class="title">OWN Cashier</span>
         <button class="add_product" onclick="location.href='add_product.php'">Add Product</button>
     </div>
-
-    <div class="products_container">
-        <?php if ($result && $result->num_rows > 0): ?>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <div class="product_card">
-                    <div class="product_info">
-                        <span class="product_name"><?= htmlspecialchars($row['product_name']); ?></span>
-                        <span class="product_price">Rp. <?= number_format($row['product_price'], 0, ',', '.'); ?></span>
+    <div class="main_container">
+        <div class="products_container">
+            <?php if ($result && $result->num_rows > 0): ?>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <div class="product_card">
+                        <div class="product_info">
+                            <span class="product_name"><?= htmlspecialchars($row['product_name']); ?></span>
+                            <span class="product_price">Rp<?= number_format($row['product_price'], 0, ',', '.'); ?></span>
+                        </div>
+                        <div class="product_stock">
+                            <span class="stock_title">Stock</span>
+                            <span class="stock_count"><?= htmlspecialchars($row['product_stock']); ?></span>
+                        </div>
                     </div>
-                    <div class="product_stock">
-                        <span class="stock_title">Stock</span>
-                        <span class="stock_count"><?= htmlspecialchars($row['product_stock']); ?></span>
-                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>No products found.</p>
+            <?php endif; ?>
+        </div>
+        <div class="checkout_container">
+            <span>Checkout</span>
+            <div class="cart_container">
+                <div class="cart_item_name">
+                    <span>Name</span>
                 </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <p>No products found.</p>
-        <?php endif; ?>
+                <div class="cart_item_qty">
+                    <span>Qty</span>
+                </div>
+                <div class="cart_item_price">
+                    <span>Price</span>
+                </div>
+                <div class="cart_item_total">
+                    <span>Total</span>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
