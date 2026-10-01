@@ -37,7 +37,11 @@ $result = $conn->query($sql);
         <div class="products_container">
             <?php if ($result && $result->num_rows > 0): ?>
                 <?php while ($row = $result->fetch_assoc()): ?>
-                    <div class="product_card">
+                    <div class="product_card"
+                         data-id="<?= htmlspecialchars($row['product_id']); ?>"
+                         data-name="<?= htmlspecialchars($row['product_name']); ?>"
+                         data-price="<?= htmlspecialchars($row['product_price']); ?>"
+                         data-stock="<?= htmlspecialchars($row['product_stock']); ?>">
                         <div class="product_info">
                             <span class="product_name"><?= htmlspecialchars($row['product_name']); ?></span>
                             <span class="product_price">Rp<?= number_format($row['product_price'], 0, ',', '.'); ?></span>
@@ -53,23 +57,19 @@ $result = $conn->query($sql);
             <?php endif; ?>
         </div>
         <div class="checkout_container">
-            <span>Checkout</span>
-            <div class="cart_container">
-                <div class="cart_item_name">
-                    <span>Name</span>
-                </div>
-                <div class="cart_item_qty">
-                    <span>Qty</span>
-                </div>
-                <div class="cart_item_price">
-                    <span>Price</span>
-                </div>
-                <div class="cart_item_total">
+            <span class="checkout_title">Checkout</span>
+            <div class="cart_container" id="cart_container">
+                <span class="empty_cart_msg">No items in cart</span>
+            </div>
+            <div class="checkout_summary">
+                <div class="checkout_total_row">
                     <span>Total</span>
+                    <span class="checkout_total_amount" id="checkout_total">Rp0</span>
                 </div>
             </div>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
 
 </html>

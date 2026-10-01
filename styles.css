@@ -17,49 +17,49 @@ span, label, input, select, button {
     display: flex;                  /* Arranges title and button horizontally in a row */
     justify-content: space-between; /* Pushes the title to the far left and the action button to the far right */
     align-items: center;            /* Centers title and button vertically */
-    background-color: rgb(150, 150, 150);
+    background-color: rgb(150, 150, 150); /* Medium gray background color for the top navigation bar */
     padding: 20px;                  /* Inner spacing around the top bar contents */
 }
 
 .title {
-    font-size: 30px;
-    font-weight: bold;
-    color: white;
+    font-size: 30px;                /* Large header text size for the app title */
+    font-weight: bold;              /* Makes title text bold for prominence */
+    color: white;                   /* White text color for high contrast */
 }
 
 .add_product,
 .back_btn {
-    width: 100px;
-    height: 50px;
-    background-color: #39a315;
+    width: 100px;                   /* Fixed 100px button width */
+    height: 50px;                   /* Fixed 50px button height */
+    background-color: #39a315;      /* Vibrant green background for the primary action button */
     cursor: pointer;                /* Changes mouse cursor to a pointer hand on hover */
     border: none;                   /* Removes default browser button border */
     border-radius: 10px;            /* Rounds button corners */
-    font-size: 15px;
-    font-weight: bold;
-    color: white;
+    font-size: 15px;                /* 15px text size for button labels */
+    font-weight: bold;              /* Bold button label text */
+    color: white;                   /* White text color on buttons */
 }
 
 .back_btn {
-    background-color: #414141;
+    background-color: #414141;      /* Dark charcoal background for the secondary back button */
 }
 
 .add_product:hover, 
 .back_btn:hover{
-    background-color: #47b518;
+    background-color: #47b518;      /* Lighter green highlight on hover */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Adds a pronounced drop shadow on hover for depth */
-    transition-duration: 0.1s;
+    transition-duration: 0.1s;      /* Smooth 0.1s transition for hover effect */
 }   
 
 .back_btn:hover {
-    background-color: #4c4c4c;
+    background-color: #4c4c4c;      /* Lighter gray highlight on hover */
 }
 
 .add_product:active,
 .back_btn:active {
     scale: 0.98;                    /* Slight shrink press-down effect when clicked */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduces shadow on click to simulate being pressed */
-    transition-duration: 0.1s;
+    transition-duration: 0.1s;      /* Fast 0.1s response on click */
 }
 
 /* --- MAIN CONTAINER --- */
@@ -77,13 +77,13 @@ span, label, input, select, button {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Creates as many 200px+ columns as fit, expanding equally (1fr) to fill the width */
     gap: 16px;                     /* Uniform 16px space between cards horizontally and vertically */
     align-content: flex-start;     /* Packs rows starting from the top, preventing rows from stretching vertically */
-    border: 1px solid #c3c3c3;
+    border: 1px solid #c3c3c3;     /* Light gray outline border around the product grid container */
     border-radius: 8px;            /* Rounded product container corners */
     padding: 16px;                 /* Inner spacing between container border and the product cards */
 }
 
 .product_card {
-    border: 1px solid #c3c3c3;
+    border: 1px solid #c3c3c3;     /* Light gray border around each card */
     display: flex;                 /* Uses Flexbox inside each card to place info (left) and stock (right) side-by-side */
     justify-content: space-between;/* Pushes product info to the left and stock counter to the right */
     gap: 16px;                     /* Minimum 16px space between product info and stock counter */
@@ -93,7 +93,21 @@ span, label, input, select, button {
     height: 105px;                 /* Sets an identical fixed height for every card */
     min-width: 0;                  /* Allows card content to shrink properly within grid cells without overflowing */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow beneath the card to create a raised effect */
-    background: white;
+    background: white;             /* Crisp white background color for card */
+    cursor: pointer;               /* Shows pointer hand cursor to indicate card is clickable */
+    user-select: none;             /* Prevents text highlighting when rapidly clicking cards */
+    transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease; /* Smooth 0.1s transition for animations */
+}
+
+.product_card:hover {
+    transform: translateY(-2px);   /* Slight lift effect on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Elevated shadow */
+    border-color: #39a315;         /* Subtle green border highlight */
+}
+
+.product_card:active {
+    scale: 0.98;                   /* Tactile press-down click feedback */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduced shadow when pressed down */
 }
 
 .product_info {
@@ -119,8 +133,8 @@ span, label, input, select, button {
 }
 
 .product_name {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 18px;                /* Sets 18px font size for product name */
+    font-weight: bold;              /* Makes product name bold for clear hierarchy */
     margin-bottom: 6px;             /* Spacing between product name and price */
     line-height: 1.25;              /* Tight line height to prevent multi-line titles from overflowing */
     display: -webkit-box;           /* Enables multi-line flexbox truncation mode */
@@ -131,32 +145,167 @@ span, label, input, select, button {
 }
 
 .product_price {
-    font-size: 15px;
-    color: #444;
+    font-size: 15px;                /* 15px font size for product price */
+    color: #444;                    /* Dark charcoal color for high readability */
     font-weight: 600;               /* Semi-bold text weight */
 }
 
 .stock_title {
-    font-size: 13px;
-    color: #666;
+    font-size: 13px;                /* Smaller 13px font size for the 'Stock' subtitle */
+    color: #666;                    /* Muted gray text color */
 }
 
 .stock_count {
-    font-size: 30px;
-    font-weight: bold;
+    font-size: 30px;                /* Large 30px number for remaining stock */
+    font-weight: bold;              /* Bold weight for fast scanning */
     line-height: 1;                 /* Compact line height to prevent vertical overflow */
 }
 
 /* --- CHECKOUT --- */
 .checkout_container {
-    border: 1px solid #c3c3c3;
+    border: 1px solid #c3c3c3;     /* Light gray outline border around checkout area */
     border-radius: 8px;             /* Rounds checkout container corners */
-    padding: 16px;                  /* Inner spacing inside checkout container */
+    padding: 12px 0 16px 0;         /* Inner vertical spacing inside checkout container */
     width: 30vw;                    /* Width takes 30% of viewport width on desktop */
     min-width: 260px;               /* Prevents checkout from shrinking below 260px */
     min-height: 100px;              /* Minimum height for the checkout box */
     height: fit-content;            /* Height expands dynamically based on cart items inside */
-    background: white;
+    background: white;              /* Solid white background color */
+
+    display: flex;                  /* Flexbox container for checkout layout */
+    flex-direction: column;         /* Stacks header, cart list, and summary vertically */
+    align-items: stretch;           /* Stretches cart items to occupy full width */
+}
+
+.checkout_title {
+    font-size: 20px;               /* 20px font size for the Checkout header title */
+    font-weight: bold;             /* Bold text weight for section title */
+    text-align: center;            /* Centers Checkout title horizontally */
+    padding-bottom: 10px;          /* 10px spacing below title before top divider border */
+}
+
+.cart_container {
+    border-top: 1px solid #c3c3c3;  /* Top dividing border separating title from items */
+    border-bottom: 1px solid #c3c3c3;/* Bottom dividing border separating items from total */
+    padding: 12px 16px;             /* Inner spacing inside cart container */
+    width: 100%;                    /* Stretches to 100% of checkout container width */
+    min-height: 80px;               /* Minimum height ensuring space for empty message */
+    max-height: 380px;              /* Allows scrolling when cart has many items */
+    overflow-y: auto;               /* Enables vertical scrolling when items exceed max-height */
+    height: fit-content;            /* Container height grows automatically with items */
+    background: white;              /* White background color */
+
+    display: flex;                  /* Flexbox layout for cart items list */
+    flex-direction: column;         /* Stacks cart item rows vertically */
+    gap: 8px;                       /* 8px vertical spacing between each cart item row */
+}
+
+.cart_item {
+    display: flex;                  /* Flexbox layout to align info, qty, and price horizontally */
+    flex-direction: row;            /* Arranges item elements in a horizontal row */
+    align-items: center;            /* Vertically centers item info, qty buttons, and subtotal */
+    justify-content: space-between; /* Spaces info (left), qty (center), and subtotal (right) */
+    width: 100%;                    /* Takes full width of the cart container */
+    padding: 6px 0;                 /* 6px vertical padding per cart item row */
+    border-bottom: 1px dashed #e5e5e5; /* Light dashed separator line between items */
+}
+
+.cart_item:last-child {
+    border-bottom: none;            /* Removes dashed border from the last item in the list */
+}
+
+.cart_item_info {
+    display: flex;                  /* Flexbox to arrange product name and unit price vertically */
+    flex-direction: column;         /* Stacks product name above unit price */
+    flex: 1;                        /* Takes up available space on the left */
+    min-width: 0;                   /* Allows text truncation without blowing out flex container */
+    gap: 2px;                       /* 2px gap between name and unit price */
+}
+
+.cart_item_info span:first-child {
+    font-size: 14px;                /* 14px font size for cart item product name */
+    font-weight: bold;              /* Bold weight for product name */
+    color: #222;                    /* Dark charcoal text color */
+    overflow: hidden;               /* Truncates text if product name is very long */
+    text-overflow: ellipsis;        /* Displays '...' when product name is clipped */
+    white-space: nowrap;            /* Keeps product name on a single line */
+}
+
+.cart_item_info span:last-child {
+    font-size: 12px;                /* 12px font size for unit price */
+    color: #666;                    /* Muted gray text color for unit price */
+}
+
+.cart_item_qty {
+    display: flex;                  /* Flexbox to arrange '-' button, count, and '+' button in a row */
+    align-items: center;            /* Vertically aligns buttons and quantity number */
+    gap: 6px;                       /* 6px spacing between buttons and quantity number */
+    margin: 0 10px;                 /* 10px horizontal margin separating qty from name and price */
+}
+
+.cart_item_qty span {
+    font-size: 14px;                /* 14px font size for quantity count */
+    font-weight: bold;              /* Bold weight for clear number visibility */
+    min-width: 16px;                /* Minimum width so count doesn't shift when digits change */
+    text-align: center;             /* Centers number text */
+}
+
+.qty_btn {
+    width: 22px;                    /* Compact 22px button width */
+    height: 22px;                   /* Compact 22px button height */
+    border-radius: 4px;             /* 4px rounded corners for quantity buttons */
+    border: 1px solid #c3c3c3;      /* Light gray button border */
+    background: #f0f0f0;            /* Light gray button background */
+    cursor: pointer;                /* Changes cursor to pointer hand on hover */
+    font-weight: bold;              /* Bold '+' and '-' symbols */
+    font-size: 14px;                /* 14px symbol size */
+    display: flex;                  /* Flexbox to center '+' or '-' symbol inside button */
+    align-items: center;            /* Centers symbol vertically */
+    justify-content: center;        /* Centers symbol horizontally */
+    padding: 0;                     /* Removes default button inner padding */
+    line-height: 1;                 /* Tight line-height to keep symbol centered */
+    user-select: none;              /* Prevents text selection when clicking rapidly */
+    transition: background-color 0.1s; /* Smooth 0.1s hover transition */
+}
+
+.qty_btn:hover {
+    background: #ddd;               /* Darker gray background on hover */
+}
+
+.cart_item_price {
+    font-size: 14px;                /* 14px font size for line subtotal */
+    font-weight: bold;              /* Bold weight for subtotal */
+    color: #333;                    /* Dark charcoal text color */
+    text-align: right;              /* Right-aligns price text */
+    min-width: 65px;                /* Minimum width so price column aligns consistently */
+}
+
+.empty_cart_msg {
+    color: #888;                    /* Muted gray text color for empty cart state */
+    font-size: 14px;                /* 14px readable message text */
+    text-align: center;             /* Centers empty message horizontally */
+    margin: 16px 0;                 /* 16px vertical margin spacing */
+}
+
+.checkout_summary {
+    display: flex;                  /* Flexbox layout for total amount row and checkout actions */
+    flex-direction: column;         /* Stacks total and buttons vertically */
+    padding: 12px 16px 0 16px;      /* Inner padding inside summary area */
+    gap: 10px;                      /* 10px spacing between summary elements */
+    width: 100%;                    /* Stretches to 100% width of checkout box */
+}
+
+.checkout_total_row {
+    display: flex;                  /* Flexbox layout for Total label and total amount */
+    justify-content: space-between; /* Pushes 'Total' to left and amount to right */
+    align-items: center;            /* Vertically aligns 'Total' text and amount */
+    font-size: 16px;                /* 16px font size for total row */
+    font-weight: bold;              /* Bold text for total row */
+}
+
+.checkout_total_amount {
+    font-size: 18px;                /* Prominent 18px font size for grand total amount */
+    color: #39a315;                 /* Green accent color representing total money */
 }
 
 @media (max-width: 768px) {
@@ -178,10 +327,10 @@ span, label, input, select, button {
 }
 
 .form_card {
-    border: 1px solid black;
-    border-radius: 8px;             /* Rounded corners */
+    border: 1px solid black;       /* Black border around the add-product form card */
+    border-radius: 8px;             /* Rounded corners by 8px */
 
-    padding: 10px;
+    padding: 10px;                  /* 10px inner padding inside form card */
 }
 
 .form_item {
@@ -194,30 +343,30 @@ span, label, input, select, button {
 .form_item select,
 .form_item button {
     padding: 10px;                  /* Comfortable inner padding inside input, select, and button */
-    border: 1px solid #c3c3c3;
+    border: 1px solid #c3c3c3;      /* Light gray border for form controls */
     border-radius: 8px;             /* Rounds input, select, and button corners */
 }
 
 .form_item button {
-    background-color: #39a315;
-    color: white;
-    font-weight: bold;
-    border: none;
+    background-color: #39a315;      /* Green background for submit button */
+    color: white;                   /* White text color */
+    font-weight: bold;              /* Bold text weight for the button */
+    border: none;                   /* Removes default browser button border */
     cursor: pointer;                /* Shows pointer hand cursor on hover */
-    transition-duration: 0.1s;
+    transition-duration: 0.1s;      /* Smooth 0.1s transition for hover effect */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Subtle drop shadow for button depth */
 
     margin-top: 10px;               /* Extra 10px spacing above the submit button */
 }
 
 .form_item button:hover {
-    background-color: #47b518;
+    background-color: #47b518;      /* Lighter green background highlight on hover */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger drop shadow on hover for elevated effect */
-    transition-duration: 0.1s;
+    transition-duration: 0.1s;      /* Smooth 0.1s hover transition */
 }
 
 .form_item button:active {
     scale: 0.98;                    /* Slight shrink effect when button is clicked */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Flattens shadow on click for tactile feedback */
-    transition-duration: 0.1s;
+    transition-duration: 0.1s;      /* Fast 0.1s click response */
 }

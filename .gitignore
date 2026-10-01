@@ -11,3 +11,8 @@ Desktop.ini
 *.njsproj
 *.sln
 *.sw?
+
+# folders
+documentation/
+documentations/
+
