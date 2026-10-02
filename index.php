@@ -31,30 +31,31 @@ $result = $conn->query($sql);
 <body>
     <div class="top_bar">
         <span class="title">OWN Cashier</span>
-        <button class="add_product" onclick="location.href='add_product.php'">Add Product</button>
     </div>
     <div class="main_container">
         <div class="products_container">
-            <?php if ($result && $result->num_rows > 0): ?>
-                <?php while ($row = $result->fetch_assoc()): ?>
-                    <div class="product_card"
-                         data-id="<?= htmlspecialchars($row['product_id']); ?>"
-                         data-name="<?= htmlspecialchars($row['product_name']); ?>"
-                         data-price="<?= htmlspecialchars($row['product_price']); ?>"
-                         data-stock="<?= htmlspecialchars($row['product_stock']); ?>">
-                        <div class="product_info">
-                            <span class="product_name"><?= htmlspecialchars($row['product_name']); ?></span>
-                            <span class="product_price">Rp<?= number_format($row['product_price'], 0, ',', '.'); ?></span>
+            <span class="products_title">Products</span>
+            <div class="product_cards_container">
+                <?php if ($result && $result->num_rows > 0): ?>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <div class="product_card" data-id="<?= htmlspecialchars($row['product_id']); ?>"
+                            data-name="<?= htmlspecialchars($row['product_name']); ?>"
+                            data-price="<?= htmlspecialchars($row['product_price']); ?>"
+                            data-stock="<?= htmlspecialchars($row['product_stock']); ?>">
+                            <div class="product_info">
+                                <span class="product_name"><?= htmlspecialchars($row['product_name']); ?></span>
+                                <span class="product_price">Rp<?= number_format($row['product_price'], 0, ',', '.'); ?></span>
+                            </div>
+                            <div class="product_stock">
+                                <span class="stock_title">Stock</span>
+                                <span class="stock_count"><?= htmlspecialchars($row['product_stock']); ?></span>
+                            </div>
                         </div>
-                        <div class="product_stock">
-                            <span class="stock_title">Stock</span>
-                            <span class="stock_count"><?= htmlspecialchars($row['product_stock']); ?></span>
-                        </div>
-                    </div>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <p>No products found.</p>
-            <?php endif; ?>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p>No products found.</p>
+                <?php endif; ?>
+            </div>
         </div>
         <div class="checkout_container">
             <span class="checkout_title">Checkout</span>
@@ -65,6 +66,9 @@ $result = $conn->query($sql);
                 <div class="checkout_total_row">
                     <span>Total</span>
                     <span class="checkout_total_amount" id="checkout_total">Rp0</span>
+                </div>
+                <div class="checkout_summary_row">
+                    <button type="button" class="pay_btn" onclick="processPayment()">Pay</button>
                 </div>
             </div>
         </div>

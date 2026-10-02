@@ -1,14 +1,18 @@
+// Stores items added to the cart: { id: {id, name, price, stock, qty} }
 const cart = {};
 
-function formatRupiah(number) {
+// Converts numbers into Indonesian Rupiah format
+function formatRupiah(number) { 
     return 'Rp' + new Intl.NumberFormat('id-ID').format(number);
 }
 
+// Renders or updates the checkout cart display
 function renderCart() {
     const cartContainer = document.getElementById('cart_container');
     const totalElem = document.getElementById('checkout_total');
     const items = Object.values(cart);
 
+    // If cart is empty, show empty cart message
     if (items.length === 0) {
         cartContainer.innerHTML = '<span class="empty_cart_msg">No items in cart</span>';
         if (totalElem) totalElem.textContent = 'Rp0';
@@ -18,6 +22,7 @@ function renderCart() {
     let total = 0;
     cartContainer.innerHTML = '';
 
+    // For each item in the cart
     items.forEach(item => {
         const subtotal = item.price * item.qty;
         total += subtotal;
@@ -46,6 +51,7 @@ function renderCart() {
     }
 }
 
+// Adds a product to the cart or increments its quantity if already present
 function addToCart(id, name, price, stock) {
     const numPrice = Number(price);
     const numStock = Number(stock);
@@ -74,6 +80,7 @@ function addToCart(id, name, price, stock) {
     renderCart();
 }
 
+// Updates the quantity of a product in the cart
 function updateQty(id, delta) {
     if (!cart[id]) return;
 
@@ -89,7 +96,9 @@ function updateQty(id, delta) {
     renderCart();
 }
 
+// Ensures cart updates when page is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
+    // Adds click event listeners to all product cards
     document.querySelectorAll('.product_card').forEach(card => {
         card.addEventListener('click', () => {
             const id = card.getAttribute('data-id');

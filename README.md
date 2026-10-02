@@ -5,4 +5,4 @@ My personal try of making a web-based cashier and product management application
 ## Features (for now)
 
 - View product list with real-time stock and prices formatted in IDR (Rp).
-- Add new products with automatic category-based product ID generation
+- Add products to cart

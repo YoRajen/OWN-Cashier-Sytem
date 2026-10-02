@@ -6,10 +6,18 @@ html, body {
     margin: 0;                      /* Removes default browser page margin */
     padding: 0;                     /* Removes default browser page padding */
     width: 100%;                    /* Makes the page take up 100% of the viewport width */
+    min-height: 100vh;              /* Ensures the page covers at least the full viewport height */
 }
 
-span, label, input, select, button {
-    font-family: Arial, Helvetica, sans-serif; /* Sets a standard sans-serif font across text and form elements */
+body {
+    display: flex;                  /* Flexbox layout to structure top_bar and main_container */
+    flex-direction: column;         /* Stacks top_bar and main_container vertically */
+    min-height: 100vh;              /* Full viewport height */
+    background-color: rgb(234, 234, 234); /* Consistent background matching main_container */
+}
+
+span, button {
+    font-family: Arial, Helvetica, sans-serif; /* Sets a standard sans-serif font across text and button elements */
 }
 
 /* --- TOP BAR --- */
@@ -19,67 +27,56 @@ span, label, input, select, button {
     align-items: center;            /* Centers title and button vertically */
     background-color: rgb(150, 150, 150); /* Medium gray background color for the top navigation bar */
     padding: 20px;                  /* Inner spacing around the top bar contents */
+    flex-shrink: 0;                 /* Prevents top bar from shrinking */
 }
 
 .title {
-    font-size: 30px;                /* Large header text size for the app title */
+    font-size: 21px;                /* Large header text size for the app title */
     font-weight: bold;              /* Makes title text bold for prominence */
     color: white;                   /* White text color for high contrast */
 }
 
-.add_product,
-.back_btn {
-    width: 100px;                   /* Fixed 100px button width */
-    height: 50px;                   /* Fixed 50px button height */
-    background-color: #39a315;      /* Vibrant green background for the primary action button */
-    cursor: pointer;                /* Changes mouse cursor to a pointer hand on hover */
-    border: none;                   /* Removes default browser button border */
-    border-radius: 10px;            /* Rounds button corners */
-    font-size: 15px;                /* 15px text size for button labels */
-    font-weight: bold;              /* Bold button label text */
-    color: white;                   /* White text color on buttons */
-}
-
-.back_btn {
-    background-color: #414141;      /* Dark charcoal background for the secondary back button */
-}
-
-.add_product:hover, 
-.back_btn:hover{
-    background-color: #47b518;      /* Lighter green highlight on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Adds a pronounced drop shadow on hover for depth */
-    transition-duration: 0.1s;      /* Smooth 0.1s transition for hover effect */
-}   
-
-.back_btn:hover {
-    background-color: #4c4c4c;      /* Lighter gray highlight on hover */
-}
-
-.add_product:active,
-.back_btn:active {
-    scale: 0.98;                    /* Slight shrink press-down effect when clicked */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduces shadow on click to simulate being pressed */
-    transition-duration: 0.1s;      /* Fast 0.1s response on click */
-}
-
 /* --- MAIN CONTAINER --- */
 .main_container {
+    flex: 1;                        /* Automatically expands to fill all remaining viewport height */
+    min-height: calc(100vh - 65px); /* Ensures full screen height down to the bottom edge */
     display: flex;                  /* Places products container and checkout container side-by-side horizontally */
     justify-content: space-between; /* Pushes products to the left and checkout to the right */
     gap: 20px;                      /* Adds 20px of space between the products and checkout sections */
     padding: 20px;                  /* Adds 20px inner spacing around the main container so content doesn't touch screen edges */
+    background-color: rgb(234, 234, 234);
 }
 
 /* --- PRODUCT LIST --- */
 .products_container {
-    flex: 1;                       /* Takes up all remaining horizontal space next to checkout */
-    display: grid;                 /* Uses CSS Grid for structured 2D rows and columns */
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Creates as many 200px+ columns as fit, expanding equally (1fr) to fill the width */
-    gap: 16px;                     /* Uniform 16px space between cards horizontally and vertically */
-    align-content: flex-start;     /* Packs rows starting from the top, preventing rows from stretching vertically */
+    background-color: rgb(248, 248, 248);
+    flex: 1;                        /* Takes up all remaining horizontal space next to checkout */
+    min-width: 0;                   /* Prevents grid blowout inside flex container */
+    display: flex;                  /* Uses Flexbox to stack title and product cards container vertically */
+    flex-direction: column;         /* Places section title above the cards */
     border: 1px solid #c3c3c3;     /* Light gray outline border around the product grid container */
-    border-radius: 8px;            /* Rounded product container corners */
-    padding: 16px;                 /* Inner spacing between container border and the product cards */
+    border-radius: 8px;             /* Rounded product container corners */
+    padding: 12px 0 12px 0;         /* Inner vertical spacing (12px top and bottom) */
+}
+
+.products_title {
+    font-size: 20px;               /* 20px font size for the Checkout header title */
+    font-weight: bold;             /* Bold text weight for section title */
+    text-align: center;            /* Centers Checkout title horizontally */
+    padding-bottom: 10px;          /* 10px spacing below title before top divider border */
+}
+
+.product_cards_container {
+    flex: 1;                        /* Fills remaining vertical space in products_container */
+    background-color: white;
+    display: grid;                  /* Uses CSS Grid for structured 2D rows and columns */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Creates as many 200px+ columns as fit, expanding equally (1fr) to fill the width */
+    gap: 16px;                      /* Uniform 16px space between cards horizontally and vertically */
+    align-content: flex-start;      /* Packs rows starting from the top, preventing rows from stretching vertically */
+    border-top: 1px solid #c3c3c3;  /* Light gray outline border around the product grid container */
+    border-bottom: 1px solid #c3c3c3;
+    padding: 12px 16px;             /* Inner spacing between container border and the product cards */
+    overflow-y: auto;               /* Allows scrolling when items exceed container height */
 }
 
 .product_card {
@@ -92,7 +89,7 @@ span, label, input, select, button {
     padding: 14px 16px;            /* Inner spacing inside the card (14px top/bottom, 16px left/right) */
     height: 105px;                 /* Sets an identical fixed height for every card */
     min-width: 0;                  /* Allows card content to shrink properly within grid cells without overflowing */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow beneath the card to create a raised effect */
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1); /* Subtle shadow beneath the card to create a raised effect */
     background: white;             /* Crisp white background color for card */
     cursor: pointer;               /* Shows pointer hand cursor to indicate card is clickable */
     user-select: none;             /* Prevents text highlighting when rapidly clicking cards */
@@ -101,7 +98,7 @@ span, label, input, select, button {
 
 .product_card:hover {
     transform: translateY(-2px);   /* Slight lift effect on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Elevated shadow */
+    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.15); /* Elevated shadow */
     border-color: #39a315;         /* Subtle green border highlight */
 }
 
@@ -308,6 +305,40 @@ span, label, input, select, button {
     color: #39a315;                 /* Green accent color representing total money */
 }
 
+.checkout_summary_row {
+    display: flex;                  /* Flexbox layout for total amount row and checkout actions */
+    flex-direction: column;         /* Stacks total and buttons vertically */
+    padding: 20px 16px 0 16px;         /* Inner spacing inside summary area */
+    gap: 10px;                      /* 10px spacing between summary elements */
+    width: 100%;                    /* Stretches to 100% width of checkout box */
+}
+
+.pay_btn {
+    background: #39a315;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 4px 0px rgba(0, 0, 0, 0.15);
+}
+
+.pay_btn:hover {
+    background: #369514;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    scale: 1.02;
+    transition: all 0.1s ease-in-out;
+}
+
+.pay_btn:disabled {
+    background: #888;
+    cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
     .main_container {
         flex-direction: column;     /* Stacks product catalog and checkout vertically on mobile/tablet */
@@ -316,57 +347,4 @@ span, label, input, select, button {
     .checkout_container {
         width: 100%;                /* Expands checkout box to full width when stacked */
     }
-}
-
-/* --- FORM PRODUCT --- */
-.form_container {
-    display: grid;                  /* Uses CSS Grid for form layout */
-    grid-template-columns: 1;       /* Single column layout */
-    justify-content: center;        /* Centers form card horizontally on the page */
-    margin: 20px;                   /* Outer margin spacing around the form area */
-}
-
-.form_card {
-    border: 1px solid black;       /* Black border around the add-product form card */
-    border-radius: 8px;             /* Rounded corners by 8px */
-
-    padding: 10px;                  /* 10px inner padding inside form card */
-}
-
-.form_item {
-    display: flex;                  /* Flexbox to arrange label and input field vertically */
-    flex-direction: column;         /* Stacks label on top of input field */
-    margin: 10px 0px;               /* 10px vertical margin between each form item */
-}
-
-.form_item input,
-.form_item select,
-.form_item button {
-    padding: 10px;                  /* Comfortable inner padding inside input, select, and button */
-    border: 1px solid #c3c3c3;      /* Light gray border for form controls */
-    border-radius: 8px;             /* Rounds input, select, and button corners */
-}
-
-.form_item button {
-    background-color: #39a315;      /* Green background for submit button */
-    color: white;                   /* White text color */
-    font-weight: bold;              /* Bold text weight for the button */
-    border: none;                   /* Removes default browser button border */
-    cursor: pointer;                /* Shows pointer hand cursor on hover */
-    transition-duration: 0.1s;      /* Smooth 0.1s transition for hover effect */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Subtle drop shadow for button depth */
-
-    margin-top: 10px;               /* Extra 10px spacing above the submit button */
-}
-
-.form_item button:hover {
-    background-color: #47b518;      /* Lighter green background highlight on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger drop shadow on hover for elevated effect */
-    transition-duration: 0.1s;      /* Smooth 0.1s hover transition */
-}
-
-.form_item button:active {
-    scale: 0.98;                    /* Slight shrink effect when button is clicked */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Flattens shadow on click for tactile feedback */
-    transition-duration: 0.1s;      /* Fast 0.1s click response */
 }
