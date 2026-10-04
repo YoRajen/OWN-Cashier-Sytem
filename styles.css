@@ -36,6 +36,12 @@ span, button {
     color: white;                   /* White text color for high contrast */
 }
 
+.date_time {
+    font-size: 15px;                /* Readable font size for clock and date */
+    font-weight: bold;              /* Bold weight matching header title */
+    color: white;                   /* White text color for high contrast */
+}
+
 /* --- MAIN CONTAINER --- */
 .main_container {
     flex: 1;                        /* Automatically expands to fill all remaining viewport height */
@@ -45,6 +51,7 @@ span, button {
     gap: 20px;                      /* Adds 20px of space between the products and checkout sections */
     padding: 20px;                  /* Adds 20px inner spacing around the main container so content doesn't touch screen edges */
     background-color: rgb(234, 234, 234);
+    align-items: stretch;           /* Stretches products and checkout containers to 100% height */
 }
 
 /* --- PRODUCT LIST --- */
@@ -166,8 +173,7 @@ span, button {
     padding: 12px 0 16px 0;         /* Inner vertical spacing inside checkout container */
     width: 30vw;                    /* Width takes 30% of viewport width on desktop */
     min-width: 260px;               /* Prevents checkout from shrinking below 260px */
-    min-height: 100px;              /* Minimum height for the checkout box */
-    height: fit-content;            /* Height expands dynamically based on cart items inside */
+    align-self: stretch;            /* Stretches checkout container to 100% height of main container */
 
     display: flex;                  /* Flexbox container for checkout layout */
     flex-direction: column;         /* Stacks header, cart list, and summary vertically */
@@ -221,10 +227,9 @@ span, button {
     border-bottom: 1px solid #c3c3c3;/* Bottom dividing border separating items from total */
     padding: 12px 16px;             /* Inner spacing inside cart container */
     width: 100%;                    /* Stretches to 100% of checkout container width */
+    flex: 1;                        /* Expands to fill all remaining vertical space in checkout_container */
     min-height: 80px;               /* Minimum height ensuring space for empty message */
-    max-height: 380px;              /* Allows scrolling when cart has many items */
-    overflow-y: auto;               /* Enables vertical scrolling when items exceed max-height */
-    height: fit-content;            /* Container height grows automatically with items */
+    overflow-y: auto;               /* Enables vertical scrolling when items exceed container height */
     background: white;              /* White background color */
 
     display: flex;                  /* Flexbox layout for cart items list */
@@ -385,5 +390,6 @@ span, button {
 
     .checkout_container {
         width: 100%;                /* Expands checkout box to full width when stacked */
+        align-self: auto;           /* Resets stretch on mobile when stacked vertically */
     }
 }

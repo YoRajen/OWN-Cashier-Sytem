@@ -164,6 +164,28 @@ async function processPayment() {
     }
 }
 
+// Updates the live clock and date display in the top bar
+function updateClock() {
+    const dateTimeElem = document.getElementById('date_time');
+    if (!dateTimeElem) return;
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-GB', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+    });
+    const timeStr = now.toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    });
+
+    dateTimeElem.textContent = `${dateStr} • ${timeStr}`;
+}
+
 // Ensures cart updates when page is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Adds click event listeners to all product cards
@@ -178,4 +200,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderCart();
+
+    // Initializes live clock and updates every second
+    updateClock();
+    setInterval(updateClock, 1000);
 });

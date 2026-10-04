@@ -22,6 +22,7 @@ $result = $conn->query($sql);
 <body>
     <div class="top_bar">
         <span class="title">OWN Cashier</span>
+        <span class="date_time" id="date_time"></span>
     </div>
     <div class="main_container">
         <div class="products_container">
@@ -51,7 +52,8 @@ $result = $conn->query($sql);
         <div class="checkout_container">
             <div class="checkout_header">
                 <span class="checkout_title">Checkout</span>
-                <button type="button" class="clear_cart_btn" id="clear_cart_btn" onclick="clearCart()" title="Remove all items from cart" disabled>Clear</button>
+                <button type="button" class="clear_cart_btn" id="clear_cart_btn" onclick="clearCart()"
+                    title="Remove all items from cart" disabled>Clear</button>
             </div>
             <div class="cart_container" id="cart_container">
                 <span class="empty_cart_msg">No items in cart</span>
