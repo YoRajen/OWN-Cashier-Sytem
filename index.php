@@ -1,14 +1,5 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db = "own_cashier_db";
-
-$conn = new mysqli($host, $user, $pass, $db);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once 'db.php';
 
 $sql = "SELECT p.product_id, p.product_name, p.product_price, p.product_stock, c.category_name 
         FROM products p

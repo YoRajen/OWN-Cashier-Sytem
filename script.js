@@ -96,6 +96,55 @@ function updateQty(id, delta) {
     renderCart();
 }
 
+// Processes the checkout: sends cart items to backend to deduct product stock from database
+async function processPayment() {
+    const items = Object.values(cart);
+
+    // Validate that the cart contains at least one item
+    if (items.length === 0) {
+        alert('Cart is empty! Please add products before checking out.');
+        return;
+    }
+
+    // Disable pay button temporarily to prevent multiple submissions
+    const payBtn = document.querySelector('.pay_btn');
+    if (payBtn) payBtn.disabled = true;
+
+    try {
+        // Send cart data as a JSON payload to the checkout backend endpoint
+        const response = await fetch('actions/do_checkout.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ items: items })
+        });
+
+        const result = await response.json();
+
+        // Handle response from the server
+        if (result.success) {
+            alert(result.message);
+
+            // Empty the cart in memory
+            for (const key in cart) {
+                delete cart[key];
+            }
+
+            // Reload the page to refresh product list and stock counts from the database
+            location.reload();
+        } else {
+            // Display error returned by the server (e.g., insufficient stock)
+            alert('Checkout failed: ' + result.message);
+            if (payBtn) payBtn.disabled = false;
+        }
+    } catch (error) {
+        console.error('Error during checkout:', error);
+        alert('An unexpected error occurred while communicating with the server.');
+        if (payBtn) payBtn.disabled = false;
+    }
+}
+
 // Ensures cart updates when page is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Adds click event listeners to all product cards

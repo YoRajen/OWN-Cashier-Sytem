@@ -160,6 +160,7 @@ span, button {
 
 /* --- CHECKOUT --- */
 .checkout_container {
+    background-color: rgb(248, 248, 248);
     border: 1px solid #c3c3c3;     /* Light gray outline border around checkout area */
     border-radius: 8px;             /* Rounds checkout container corners */
     padding: 12px 0 16px 0;         /* Inner vertical spacing inside checkout container */
@@ -167,7 +168,6 @@ span, button {
     min-width: 260px;               /* Prevents checkout from shrinking below 260px */
     min-height: 100px;              /* Minimum height for the checkout box */
     height: fit-content;            /* Height expands dynamically based on cart items inside */
-    background: white;              /* Solid white background color */
 
     display: flex;                  /* Flexbox container for checkout layout */
     flex-direction: column;         /* Stacks header, cart list, and summary vertically */
