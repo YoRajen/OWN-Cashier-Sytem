@@ -17,8 +17,6 @@ if (!$data || !isset($data['items']) || !is_array($data['items']) || empty($data
 
 $items = $data['items'];
 
-// Begin a database transaction to ensure atomicity
-// If any product stock deduction fails, all changes will be rolled back
 $conn->begin_transaction();
 
 try {

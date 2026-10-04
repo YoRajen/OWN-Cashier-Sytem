@@ -174,11 +174,46 @@ span, button {
     align-items: stretch;           /* Stretches cart items to occupy full width */
 }
 
+.checkout_header {
+    position: relative;             /* Establishes positioning context for the clear cart button */
+    display: flex;                  /* Flexbox layout to structure title and action buttons */
+    justify-content: center;        /* Centers the Checkout title horizontally */
+    align-items: center;            /* Centers items vertically */
+    padding: 0 16px 10px 16px;      /* 16px horizontal spacing to align with cart content, 10px bottom spacing */
+}
+
 .checkout_title {
     font-size: 20px;               /* 20px font size for the Checkout header title */
     font-weight: bold;             /* Bold text weight for section title */
     text-align: center;            /* Centers Checkout title horizontally */
-    padding-bottom: 10px;          /* 10px spacing below title before top divider border */
+}
+
+.clear_cart_btn {
+    position: absolute;             /* Anchors clear button to right edge of header */
+    right: 16px;                    /* Aligns with 16px padding of cart content */
+    background: #e74c3c;            /* Distinct red accent color indicating destructive clear action */
+    color: white;                   /* White text color for readability */
+    border: none;                   /* Removes default button border */
+    border-radius: 4px;             /* 4px rounded corners matching other UI buttons */
+    padding: 5px 10px;              /* Compact button padding */
+    font-size: 12px;                /* Compact 12px font size */
+    font-weight: bold;              /* Bold button text */
+    cursor: pointer;                /* Pointer cursor on hover */
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15); /* Subtle bottom shadow */
+    transition: background-color 0.1s ease, transform 0.1s ease;
+}
+
+.clear_cart_btn:hover {
+    background: #c0392b;            /* Darker red hover state */
+    transform: translateY(-1px);    /* Subtle lift animation on hover */
+}
+
+.clear_cart_btn:disabled {
+    background: #ccc;               /* Muted gray background when disabled */
+    color: #888;                    /* Muted gray text when disabled */
+    cursor: not-allowed;            /* Not-allowed cursor to indicate inactive state */
+    box-shadow: none;               /* Removes button shadow when inactive */
+    transform: none;                /* Disables hover lift */
 }
 
 .cart_container {
@@ -281,7 +316,11 @@ span, button {
     color: #888;                    /* Muted gray text color for empty cart state */
     font-size: 14px;                /* 14px readable message text */
     text-align: center;             /* Centers empty message horizontally */
-    margin: 16px 0;                 /* 16px vertical margin spacing */
+    display: flex;                  /* Flexbox to reliably center content */
+    justify-content: center;        /* Centers text content horizontally */
+    align-items: center;            /* Centers text content vertically */
+    width: 100%;                    /* Stretches to full width of cart container */
+    margin: auto 0;                 /* Automatically balances vertical space to center message within min-height */
 }
 
 .checkout_summary {

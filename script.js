@@ -10,14 +10,19 @@ function formatRupiah(number) {
 function renderCart() {
     const cartContainer = document.getElementById('cart_container');
     const totalElem = document.getElementById('checkout_total');
+    const clearBtn = document.getElementById('clear_cart_btn');
     const items = Object.values(cart);
 
-    // If cart is empty, show empty cart message
+    // If cart is empty, show empty cart message and disable clear button
     if (items.length === 0) {
         cartContainer.innerHTML = '<span class="empty_cart_msg">No items in cart</span>';
         if (totalElem) totalElem.textContent = 'Rp0';
+        if (clearBtn) clearBtn.disabled = true;
         return;
     }
+
+    // Enable clear button when items exist in the cart
+    if (clearBtn) clearBtn.disabled = false;
 
     let total = 0;
     cartContainer.innerHTML = '';
@@ -92,6 +97,20 @@ function updateQty(id, delta) {
         return;
     } else {
         cart[id].qty = newQty;
+    }
+    renderCart();
+}
+
+// Removes all items from the cart
+function clearCart() {
+    const itemKeys = Object.keys(cart);
+
+    // If cart is already empty, nothing to clear
+    if (itemKeys.length === 0) return;
+
+    // Delete all item entries from cart
+    for (const key of itemKeys) {
+        delete cart[key];
     }
     renderCart();
 }

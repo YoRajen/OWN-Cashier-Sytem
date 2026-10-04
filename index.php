@@ -49,7 +49,10 @@ $result = $conn->query($sql);
             </div>
         </div>
         <div class="checkout_container">
-            <span class="checkout_title">Checkout</span>
+            <div class="checkout_header">
+                <span class="checkout_title">Checkout</span>
+                <button type="button" class="clear_cart_btn" id="clear_cart_btn" onclick="clearCart()" title="Remove all items from cart" disabled>Clear</button>
+            </div>
             <div class="cart_container" id="cart_container">
                 <span class="empty_cart_msg">No items in cart</span>
             </div>
