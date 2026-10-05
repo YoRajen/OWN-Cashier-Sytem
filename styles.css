@@ -1,486 +1,706 @@
+/* ==========================================================
+   OWN CASHIER - RETRO POS & HARDWARE SYSTEM DESIGN
+   Aesthetic: Neo-Retro / 80s Hardware POS & Terminal Aesthetic
+   ========================================================== */
+
+:root {
+    --retro-dark: #201D1A;              /* Deep charcoal/espresso hardware frame color */
+    --retro-bg: #F4EFE6;                /* Vintage warm parchment/canvas background */
+    --retro-panel: #FAF5ED;             /* Warm off-white chassis panel */
+    --retro-card: #FFFDF9;              /* Crisp warm ivory card background */
+    --retro-paper: #FFFDF8;             /* Paper receipt color */
+    --retro-orange: #FF6B35;            /* 70s-80s burnt orange primary accent */
+    --retro-amber: #F7B801;             /* Vintage mustard gold / amber */
+    --retro-green: #0E9F57;             /* Classic mechanical cash register green */
+    --retro-green-hover: #0B8347;       /* Darker green hover state */
+    --retro-green-glow: #38EF7D;        /* Illuminated green phosphor LCD glow */
+    --retro-red: #D9383A;               /* Retro signal red for cancel/clear */
+    --retro-red-hover: #B82C2E;         /* Darker red hover state */
+    --retro-muted: #82786D;             /* Faded vintage typewriter ink */
+    --retro-border: 2px solid #201D1A;  /* Standard crisp retro hard outline */
+    --retro-border-thick: 2.5px solid #201D1A; /* Outer container heavy outline */
+    --retro-shadow-sm: 2px 2px 0px #201D1A;    /* Small keycap shadow */
+    --retro-shadow: 3px 3px 0px #201D1A;       /* Standard tactile drop shadow */
+    --retro-shadow-lg: 5px 5px 0px #201D1A;    /* Heavy chassis container shadow */
+    --font-heading: 'Space Grotesk', -apple-system, sans-serif;
+    --font-mono: 'Space Mono', 'Courier Prime', monospace;
+}
+
 *, *::before, *::after {
-    box-sizing: border-box;         /* Includes padding and borders in total width and height calculations */
+    box-sizing: border-box;
 }
 
 html, body {
-    margin: 0;                      /* Removes default browser page margin */
-    padding: 0;                     /* Removes default browser page padding */
-    width: 100%;                    /* Makes the page take up 100% of the viewport width */
-    min-height: 100vh;              /* Ensures the page covers at least the full viewport height */
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
 }
 
 body {
-    display: flex;                  /* Flexbox layout to structure top_bar and main_container */
-    flex-direction: column;         /* Stacks top_bar and main_container vertically */
-    min-height: 100vh;              /* Full viewport height */
-    background-color: rgb(234, 234, 234); /* Consistent background matching main_container */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--retro-card);
+    font-family: var(--font-heading);
+    color: var(--retro-dark);
+    -webkit-font-smoothing: antialiased;
 }
 
-span, button {
-    font-family: Arial, Helvetica, sans-serif; /* Sets a standard sans-serif font across text and button elements */
+span, button, select, label, input {
+    font-family: var(--font-heading);
 }
 
-/* --- TOP BAR --- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #EFE8DC;
+    border-left: 1px solid var(--retro-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--retro-dark);
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--retro-orange);
+}
+
+/* ==========================================================
+   TOP BAR - VINTAGE TERMINAL HEADER
+   ========================================================== */
 .top_bar {
-    display: flex;                  /* Arranges title and button horizontally in a row */
-    justify-content: space-between; /* Pushes the title to the far left and the action button to the far right */
-    align-items: center;            /* Centers title and button vertically */
-    background-color: rgb(150, 150, 150); /* Medium gray background color for the top navigation bar */
-    padding: 20px;                  /* Inner spacing around the top bar contents */
-    flex-shrink: 0;                 /* Prevents top bar from shrinking */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--retro-dark);
+    padding: 14px 24px;
+    flex-shrink: 0;
+    border-bottom: 3px solid #141210;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.12);
+}
+
+.brand_container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .title {
-    font-size: 21px;                /* Large header text size for the app title */
-    font-weight: bold;              /* Makes title text bold for prominence */
-    color: white;                   /* White text color for high contrast */
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #FFFDF9;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+}
+
+.clock_display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #101815;
+    border: 2px solid #33403A;
+    border-radius: 5px;
+    padding: 6px 14px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8), 0 2px 0 rgba(255, 255, 255, 0.1);
+}
+
+@keyframes ledPulse {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
 }
 
 .date_time {
-    font-size: 15px;                /* Readable font size for clock and date */
-    font-weight: bold;              /* Bold weight matching header title */
-    color: white;                   /* White text color for high contrast */
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: var(--retro-green-glow);
+    text-shadow: 0 0 7px rgba(56, 239, 125, 0.55);
+    user-select: none;
 }
 
-/* --- MAIN CONTAINER --- */
+/* ==========================================================
+   MAIN CONTAINER - SIDE-BY-SIDE TILL & CATALOG
+   ========================================================== */
 .main_container {
-    flex: 1;                        /* Automatically expands to fill all remaining viewport height */
-    min-height: calc(100vh - 65px); /* Ensures full screen height down to the bottom edge */
-    display: flex;                  /* Places products container and checkout container side-by-side horizontally */
-    justify-content: space-between; /* Pushes products to the left and checkout to the right */
-    gap: 20px;                      /* Adds 20px of space between the products and checkout sections */
-    padding: 20px;                  /* Adds 20px inner spacing around the main container so content doesn't touch screen edges */
-    background-color: rgb(234, 234, 234);
-    align-items: stretch;           /* Stretches products and checkout containers to 100% height */
+    flex: 1;
+    min-height: calc(100vh - 65px);
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 24px;
+    align-items: stretch;
 }
 
-/* --- PRODUCT LIST --- */
+/* ==========================================================
+   PRODUCTS SECTION - RETRO HARDWARE FRAME
+   ========================================================== */
 .products_container {
-    background-color: rgb(248, 248, 248);
-    flex: 1;                        /* Takes up all remaining horizontal space next to checkout */
-    min-width: 0;                   /* Prevents grid blowout inside flex container */
-    display: flex;                  /* Uses Flexbox to stack title and product cards container vertically */
-    flex-direction: column;         /* Places section title above the cards */
-    border: 1px solid #c3c3c3;     /* Light gray outline border around the product grid container */
-    border-radius: 8px;             /* Rounded product container corners */
-    padding: 12px 0 12px 0;         /* Inner vertical spacing (12px top and bottom) */
+    background-color: var(--retro-panel);
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    border: var(--retro-border-thick);
+    border-radius: 10px;
+    box-shadow: var(--retro-shadow-lg);
+    padding: 16px 0;
 }
 
 .products_header {
-    display: flex;                  /* Flexbox layout to arrange title group and counter badge */
-    justify-content: space-between; /* Pushes title and filter to the left and count badge to the right */
-    align-items: center;            /* Centers items vertically */
-    padding: 0 16px 10px 16px;      /* 16px horizontal spacing matching product cards, 10px bottom spacing */
-    gap: 12px;                      /* 12px gap between title group and counter badge */
-    flex-wrap: wrap;                /* Wraps gracefully on narrow screen widths */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 14px 20px;
+    border-bottom: 2px dashed #D5CCC0;
+    gap: 12px;
+    flex-wrap: wrap;
+    min-height: 52px;
+    box-sizing: border-box;
 }
 
 .products_title_group {
-    display: flex;                  /* Places title and category filter side-by-side */
-    align-items: center;            /* Centers title and filter vertically */
-    gap: 16px;                      /* 16px space between Products title and category filter */
-    flex-wrap: wrap;                /* Allows filter to wrap neatly if title area is constricted */
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 .products_title {
-    font-size: 20px;               /* 20px font size for the Products header title */
-    font-weight: bold;             /* Bold text weight for section title */
-    color: #111;                   /* High contrast text color */
+    font-size: 21px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--retro-dark);
 }
 
 .category_filter_buttons {
-    display: flex;                  /* Aligns category filter buttons horizontally */
-    align-items: center;            /* Centers buttons vertically */
-    gap: 8px;                       /* 8px spacing between category buttons */
-    flex-wrap: wrap;                /* Allows buttons to wrap on smaller screens */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .category_btn {
-    font-family: Arial, Helvetica, sans-serif; /* Standard sans-serif font matching app */
-    font-size: 13px;                /* 13px readable font size */
-    font-weight: 600;               /* Semi-bold weight for readability */
-    color: #444;                    /* Charcoal text color for inactive buttons */
-    background-color: white;        /* White button background */
-    border: 1px solid #c3c3c3;      /* Light gray border matching cards */
-    border-radius: 6px;             /* 6px rounded corners */
-    padding: 6px 14px;              /* Inner padding for comfortable click area */
-    cursor: pointer;                /* Pointer cursor on hover */
-    outline: none;                  /* Removes default outline */
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08); /* Subtle shadow for depth */
-    transition: all 0.15s ease;     /* Smooth transitions across hover and active states */
-    user-select: none;              /* Prevents text selection on rapid clicking */
+    font-family: var(--font-heading);
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--retro-dark);
+    background-color: var(--retro-card);
+    border: var(--retro-border);
+    border-radius: 5px;
+    padding: 6px 14px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: var(--retro-shadow-sm);
+    transition: all 0.1s ease;
+    user-select: none;
 }
 
 .category_btn:hover {
-    background-color: #f3f3f3;      /* Subtle gray hover tint */
-    border-color: #999;             /* Darker border on hover */
-    color: #111;                    /* High contrast dark text */
-    transform: translateY(-1px);    /* Subtle lift feedback */
+    background-color: #FFF3E2;
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px var(--retro-dark);
 }
 
 .category_btn.active {
-    background-color: #39a315;      /* Vibrant green background for active category matching pay button */
-    color: white;                   /* White text for clear contrast */
-    border-color: #2e8411;          /* Darker green border */
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15); /* Stronger shadow */
-    font-weight: bold;              /* Bold font weight when active */
-    transform: none;                /* Resets lift */
+    background-color: var(--retro-orange);
+    color: white;
+    box-shadow: 1px 1px 0px var(--retro-dark);
+    transform: translate(2px, 2px); /* Pressed mechanical key effect */
 }
 
 .category_btn.active:hover {
-    background-color: #349413;      /* Darker green hover state when active */
-    color: white;                   /* Keeps text white */
-}
-
-.category_btn:active {
-    transform: translateY(1px);     /* Tactile press-down feedback */
-    box-shadow: none;               /* Removes bottom shadow on press */
+    background-color: #E85B26;
+    color: white;
 }
 
 .product_count_badge {
-    font-size: 12px;                /* 12px compact badge font */
-    font-weight: 600;               /* Semi-bold weight */
-    color: #666;                    /* Muted gray text */
-    background-color: #e5e5e5;      /* Soft light-gray background */
-    padding: 4px 10px;              /* Pill padding */
-    border-radius: 12px;            /* Fully rounded pill shape */
-    user-select: none;              /* Prevents accidental selection */
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--retro-amber);
+    background-color: var(--retro-dark);
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    user-select: none;
+    box-shadow: 1.5px 1.5px 0 rgba(0, 0, 0, 0.2);
 }
 
-.no_products_msg {
-    grid-column: 1 / -1;            /* Spans all grid columns */
-    text-align: center;             /* Centers message text horizontally */
-    padding: 40px 16px;             /* Generous vertical padding */
-    color: #888;                    /* Muted gray text color */
-    font-size: 15px;                /* Readable font size */
-    font-weight: 500;               /* Medium font weight */
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-
+/* ==========================================================
+   PRODUCT CARDS GRID
+   ========================================================== */
 .product_cards_container {
-    flex: 1;                        /* Fills remaining vertical space in products_container */
-    background-color: white;
-    display: grid;                  /* Uses CSS Grid for structured 2D rows and columns */
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Creates as many 200px+ columns as fit, expanding equally (1fr) to fill the width */
-    gap: 16px;                      /* Uniform 16px space between cards horizontally and vertically */
-    align-content: flex-start;      /* Packs rows starting from the top, preventing rows from stretching vertically */
-    border-top: 1px solid #c3c3c3;  /* Light gray outline border around the product grid container */
-    border-bottom: 1px solid #c3c3c3;
-    padding: 12px 16px;             /* Inner spacing between container border and the product cards */
-    overflow-y: auto;               /* Allows scrolling when items exceed container height */
+    flex: 1;
+    background-color: #F8F3EA;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+    gap: 16px;
+    align-content: flex-start;
+    padding: 18px 20px;
+    overflow-y: auto;
 }
 
 .product_card {
-    border: 1px solid #c3c3c3;     /* Light gray border around each card */
-    display: flex;                 /* Uses Flexbox inside each card to place info (left) and stock (right) side-by-side */
-    justify-content: space-between;/* Pushes product info to the left and stock counter to the right */
-    gap: 16px;                     /* Minimum 16px space between product info and stock counter */
-    align-items: center;           /* Centers product info and stock counter vertically inside the card */
-    border-radius: 8px;            /* Rounds card corners */
-    padding: 14px 16px;            /* Inner spacing inside the card (14px top/bottom, 16px left/right) */
-    height: 105px;                 /* Sets an identical fixed height for every card */
-    min-width: 0;                  /* Allows card content to shrink properly within grid cells without overflowing */
-    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1); /* Subtle shadow beneath the card to create a raised effect */
-    background: white;             /* Crisp white background color for card */
-    cursor: pointer;               /* Shows pointer hand cursor to indicate card is clickable */
-    user-select: none;             /* Prevents text highlighting when rapidly clicking cards */
-    transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease; /* Smooth 0.1s transition for animations */
+    background-color: var(--retro-card);
+    border: var(--retro-border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    min-height: 110px;
+    min-width: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: center;
+    box-shadow: var(--retro-shadow);
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.product_card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--retro-dark);
+    opacity: 0;
+    transition: opacity 0.12s ease;
 }
 
 .product_card:hover {
-    transform: translateY(-2px);   /* Slight lift effect on hover */
-    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.15); /* Elevated shadow */
-    border-color: #39a315;         /* Subtle green border highlight */
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px var(--retro-dark);
+    background-color: #FFFEFB;
+}
+
+.product_card:hover::before {
+    opacity: 1;
+    background: var(--retro-orange);
 }
 
 .product_card:active {
-    scale: 0.98;                   /* Tactile press-down click feedback */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduced shadow when pressed down */
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--retro-dark);
 }
 
 .product_info {
-    display: flex;                  /* Uses Flexbox to arrange product name and price vertically */
-    flex-direction: column;         /* Stacks product name on top of product price */
-    justify-content: center;        /* Centers the product name and price vertically in the card */
-    min-width: 0;                   /* Overrides default flex min-width: auto so child text can shrink and wrap */
-    flex: 1;                        /* Takes up all available space to the left of the stock column */
-    overflow: hidden;               /* Clips any text overflowing outside the info area */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    gap: 3px;
 }
 
-.product_stock {
-    display: flex;                  /* Uses Flexbox to align 'Stock' title and count number vertically */
-    flex-direction: column;         /* Stacks 'Stock' label above the quantity number */
-    align-items: center;            /* Centers stock title and number horizontally */
-    justify-content: center;        /* Centers stock title and number vertically */
-    text-align: center;             /* Centers text alignment */
-    border-left: 1px solid #c3c3c3; /* Vertical separator line between product info and stock */
-    padding-left: 14px;             /* Spacing between vertical separator line and stock content */
-    flex-shrink: 0;                 /* Prevents the stock section from getting compressed when card shrinks */
-    gap: 4px;                       /* Small 4px gap between 'Stock' label and quantity count */
-    height: 100%;                   /* Extends the vertical separator line across the full card height */
+.product_category_tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--retro-orange);
 }
 
 .product_name {
-    font-size: 18px;                /* Sets 18px font size for product name */
-    font-weight: bold;              /* Makes product name bold for clear hierarchy */
-    margin-bottom: 6px;             /* Spacing between product name and price */
-    line-height: 1.25;              /* Tight line height to prevent multi-line titles from overflowing */
-    display: -webkit-box;           /* Enables multi-line flexbox truncation mode */
-    -webkit-line-clamp: 2;          /* Limits product name display to at most 2 lines */
-    -webkit-box-orient: vertical;   /* Sets vertical orientation for line clamping */
-    overflow: hidden;               /* Hides any text exceeding the 2 allowed lines */
-    text-overflow: ellipsis;        /* Adds '...' at the end of truncated text */
+    font-size: 16.5px;
+    font-weight: 700;
+    color: var(--retro-dark);
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .product_price {
-    font-size: 15px;                /* 15px font size for product price */
-    color: #444;                    /* Dark charcoal color for high readability */
-    font-weight: 600;               /* Semi-bold text weight */
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--retro-green);
+    letter-spacing: -0.3px;
+}
+
+.product_stock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-left: 2px dashed #D5CCC0;
+    padding-left: 14px;
+    flex-shrink: 0;
+    gap: 2px;
+    height: 100%;
 }
 
 .stock_title {
-    font-size: 13px;                /* Smaller 13px font size for the 'Stock' subtitle */
-    color: #666;                    /* Muted gray text color */
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--retro-muted);
 }
 
 .stock_count {
-    font-size: 30px;                /* Large 30px number for remaining stock */
-    font-weight: bold;              /* Bold weight for fast scanning */
-    line-height: 1;                 /* Compact line height to prevent vertical overflow */
+    font-family: var(--font-mono);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--retro-dark);
+    line-height: 1;
 }
 
-/* --- CHECKOUT --- */
-.checkout_container {
-    background-color: rgb(248, 248, 248);
-    border: 1px solid #c3c3c3;     /* Light gray outline border around checkout area */
-    border-radius: 8px;             /* Rounds checkout container corners */
-    padding: 12px 0 16px 0;         /* Inner vertical spacing inside checkout container */
-    width: 30vw;                    /* Width takes 30% of viewport width on desktop */
-    min-width: 260px;               /* Prevents checkout from shrinking below 260px */
-    align-self: stretch;            /* Stretches checkout container to 100% height of main container */
+.no_products_msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 48px 16px;
+    color: var(--retro-muted);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
 
-    display: flex;                  /* Flexbox container for checkout layout */
-    flex-direction: column;         /* Stacks header, cart list, and summary vertically */
-    align-items: stretch;           /* Stretches cart items to occupy full width */
+/* ==========================================================
+   CHECKOUT SECTION - TILL & RECEIPT ROLL
+   ========================================================== */
+.checkout_container {
+    background-color: var(--retro-panel);
+    border: var(--retro-border-thick);
+    border-radius: 10px;
+    box-shadow: var(--retro-shadow-lg);
+    padding: 16px 0;
+    width: 32vw;
+    min-width: 290px;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 .checkout_header {
-    position: relative;             /* Establishes positioning context for the clear cart button */
-    display: flex;                  /* Flexbox layout to structure title and action buttons */
-    justify-content: center;        /* Centers the Checkout title horizontally */
-    align-items: center;            /* Centers items vertically */
-    padding: 0 16px 10px 16px;      /* 16px horizontal spacing to align with cart content, 10px bottom spacing */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px 14px 20px;
+    border-bottom: 2px dashed #D5CCC0;
+    min-height: 52px;
+    box-sizing: border-box;
 }
 
 .checkout_title {
-    font-size: 20px;               /* 20px font size for the Checkout header title */
-    font-weight: bold;             /* Bold text weight for section title */
-    text-align: center;            /* Centers Checkout title horizontally */
+    font-size: 21px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--retro-dark);
+    margin: 0;
+    line-height: 1.2;
 }
 
 .clear_cart_btn {
-    position: absolute;             /* Anchors clear button to right edge of header */
-    right: 16px;                    /* Aligns with 16px padding of cart content */
-    background: #e74c3c;            /* Distinct red accent color indicating destructive clear action */
-    color: white;                   /* White text color for readability */
-    border: none;                   /* Removes default button border */
-    border-radius: 4px;             /* 4px rounded corners matching other UI buttons */
-    padding: 5px 10px;              /* Compact button padding */
-    font-size: 12px;                /* Compact 12px font size */
-    font-weight: bold;              /* Bold button text */
-    cursor: pointer;                /* Pointer cursor on hover */
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15); /* Subtle bottom shadow */
-    transition: background-color 0.1s ease, transform 0.1s ease;
+    position: absolute;
+    right: 20px;
+    top: calc((100% - 14px) / 2);
+    transform: translateY(-50%);
+    background: var(--retro-red);
+    color: white;
+    border: var(--retro-border);
+    border-radius: 5px;
+    padding: 5px 12px;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    cursor: pointer;
+    box-shadow: var(--retro-shadow-sm);
+    transition: all 0.1s ease;
 }
 
 .clear_cart_btn:hover {
-    background: #c0392b;            /* Darker red hover state */
-    transform: translateY(-1px);    /* Subtle lift animation on hover */
+    background: var(--retro-red-hover);
+    transform: translate(-1px, calc(-50% - 1px));
+    box-shadow: 3px 3px 0px var(--retro-dark);
+}
+
+.clear_cart_btn:active {
+    transform: translate(1px, calc(-50% + 1px));
+    box-shadow: 0px 0px 0px var(--retro-dark);
 }
 
 .clear_cart_btn:disabled {
-    background: #ccc;               /* Muted gray background when disabled */
-    color: #888;                    /* Muted gray text when disabled */
-    cursor: not-allowed;            /* Not-allowed cursor to indicate inactive state */
-    box-shadow: none;               /* Removes button shadow when inactive */
-    transform: none;                /* Disables hover lift */
+    background: #D8D0C4;
+    color: #9E968B;
+    border-color: #B8B0A4;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: translateY(-50%);
 }
 
 .cart_container {
-    border-top: 1px solid #c3c3c3;  /* Top dividing border separating title from items */
-    border-bottom: 1px solid #c3c3c3;/* Bottom dividing border separating items from total */
-    padding: 12px 16px;             /* Inner spacing inside cart container */
-    width: 100%;                    /* Stretches to 100% of checkout container width */
-    flex: 1;                        /* Expands to fill all remaining vertical space in checkout_container */
-    min-height: 80px;               /* Minimum height ensuring space for empty message */
-    overflow-y: auto;               /* Enables vertical scrolling when items exceed container height */
-    background: white;              /* White background color */
-
-    display: flex;                  /* Flexbox layout for cart items list */
-    flex-direction: column;         /* Stacks cart item rows vertically */
-    gap: 8px;                       /* 8px vertical spacing between each cart item row */
+    background-color: var(--retro-paper);
+    border-top: 2px solid var(--retro-dark);
+    border-bottom: 2px solid var(--retro-dark);
+    padding: 14px 18px;
+    width: 100%;
+    flex: 1;
+    min-height: 100px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .cart_item {
-    display: flex;                  /* Flexbox layout to align info, qty, and price horizontally */
-    flex-direction: row;            /* Arranges item elements in a horizontal row */
-    align-items: center;            /* Vertically centers item info, qty buttons, and subtotal */
-    justify-content: space-between; /* Spaces info (left), qty (center), and subtotal (right) */
-    width: 100%;                    /* Takes full width of the cart container */
-    padding: 6px 0;                 /* 6px vertical padding per cart item row */
-    border-bottom: 1px dashed #e5e5e5; /* Light dashed separator line between items */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 6px 0;
+    border-bottom: 1px dashed #DDD5C9;
+    font-family: var(--font-mono);
 }
 
 .cart_item:last-child {
-    border-bottom: none;            /* Removes dashed border from the last item in the list */
+    border-bottom: none;
 }
 
 .cart_item_info {
-    display: flex;                  /* Flexbox to arrange product name and unit price vertically */
-    flex-direction: column;         /* Stacks product name above unit price */
-    flex: 1;                        /* Takes up available space on the left */
-    min-width: 0;                   /* Allows text truncation without blowing out flex container */
-    gap: 2px;                       /* 2px gap between name and unit price */
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    gap: 2px;
 }
 
 .cart_item_info span:first-child {
-    font-size: 14px;                /* 14px font size for cart item product name */
-    font-weight: bold;              /* Bold weight for product name */
-    color: #222;                    /* Dark charcoal text color */
-    overflow: hidden;               /* Truncates text if product name is very long */
-    text-overflow: ellipsis;        /* Displays '...' when product name is clipped */
-    white-space: nowrap;            /* Keeps product name on a single line */
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--retro-dark);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .cart_item_info span:last-child {
-    font-size: 12px;                /* 12px font size for unit price */
-    color: #666;                    /* Muted gray text color for unit price */
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--retro-muted);
 }
 
 .cart_item_qty {
-    display: flex;                  /* Flexbox to arrange '-' button, count, and '+' button in a row */
-    align-items: center;            /* Vertically aligns buttons and quantity number */
-    gap: 6px;                       /* 6px spacing between buttons and quantity number */
-    margin: 0 10px;                 /* 10px horizontal margin separating qty from name and price */
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 8px;
 }
 
 .cart_item_qty span {
-    font-size: 14px;                /* 14px font size for quantity count */
-    font-weight: bold;              /* Bold weight for clear number visibility */
-    min-width: 16px;                /* Minimum width so count doesn't shift when digits change */
-    text-align: center;             /* Centers number text */
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 18px;
+    text-align: center;
+    color: var(--retro-dark);
 }
 
 .qty_btn {
-    width: 22px;                    /* Compact 22px button width */
-    height: 22px;                   /* Compact 22px button height */
-    border-radius: 4px;             /* 4px rounded corners for quantity buttons */
-    border: 1px solid #c3c3c3;      /* Light gray button border */
-    background: #f0f0f0;            /* Light gray button background */
-    cursor: pointer;                /* Changes cursor to pointer hand on hover */
-    font-weight: bold;              /* Bold '+' and '-' symbols */
-    font-size: 14px;                /* 14px symbol size */
-    display: flex;                  /* Flexbox to center '+' or '-' symbol inside button */
-    align-items: center;            /* Centers symbol vertically */
-    justify-content: center;        /* Centers symbol horizontally */
-    padding: 0;                     /* Removes default button inner padding */
-    line-height: 1;                 /* Tight line-height to keep symbol centered */
-    user-select: none;              /* Prevents text selection when clicking rapidly */
-    transition: background-color 0.1s; /* Smooth 0.1s hover transition */
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: var(--retro-border);
+    background: #EFE8DC;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    user-select: none;
+    box-shadow: 1.5px 1.5px 0px var(--retro-dark);
+    transition: all 0.08s ease;
 }
 
 .qty_btn:hover {
-    background: #ddd;               /* Darker gray background on hover */
+    background: #E2D9CB;
+    transform: translate(-1px, -1px);
+    box-shadow: 2.5px 2.5px 0px var(--retro-dark);
+}
+
+.qty_btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 0px 0px 0px var(--retro-dark);
 }
 
 .cart_item_price {
-    font-size: 14px;                /* 14px font size for line subtotal */
-    font-weight: bold;              /* Bold weight for subtotal */
-    color: #333;                    /* Dark charcoal text color */
-    text-align: right;              /* Right-aligns price text */
-    min-width: 65px;                /* Minimum width so price column aligns consistently */
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--retro-dark);
+    text-align: right;
+    min-width: 70px;
 }
 
 .empty_cart_msg {
-    color: #888;                    /* Muted gray text color for empty cart state */
-    font-size: 14px;                /* 14px readable message text */
-    text-align: center;             /* Centers empty message horizontally */
-    display: flex;                  /* Flexbox to reliably center content */
-    justify-content: center;        /* Centers text content horizontally */
-    align-items: center;            /* Centers text content vertically */
-    width: 100%;                    /* Stretches to full width of cart container */
-    margin: auto 0;                 /* Automatically balances vertical space to center message within min-height */
+    color: var(--retro-muted);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: auto 0;
+    user-select: none;
 }
 
+/* ==========================================================
+   CHECKOUT SUMMARY & CASH REGISTER PAY KEY
+   ========================================================== */
 .checkout_summary {
-    display: flex;                  /* Flexbox layout for total amount row and checkout actions */
-    flex-direction: column;         /* Stacks total and buttons vertically */
-    padding: 12px 16px 0 16px;      /* Inner padding inside summary area */
-    gap: 10px;                      /* 10px spacing between summary elements */
-    width: 100%;                    /* Stretches to 100% width of checkout box */
+    display: flex;
+    flex-direction: column;
+    padding: 16px 20px 0 20px;
+    gap: 14px;
+    width: 100%;
+    border-top: 2px dashed #D5CCC0;
 }
 
 .checkout_total_row {
-    display: flex;                  /* Flexbox layout for Total label and total amount */
-    justify-content: space-between; /* Pushes 'Total' to left and amount to right */
-    align-items: center;            /* Vertically aligns 'Total' text and amount */
-    font-size: 16px;                /* 16px font size for total row */
-    font-weight: bold;              /* Bold text for total row */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #101815;
+    border: var(--retro-border);
+    border-radius: 6px;
+    padding: 10px 16px;
+    box-shadow: var(--retro-shadow-sm);
+}
+
+.total_label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #98A69E;
 }
 
 .checkout_total_amount {
-    font-size: 18px;                /* Prominent 18px font size for grand total amount */
-    color: #39a315;                 /* Green accent color representing total money */
+    font-family: var(--font-mono);
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--retro-green-glow);
+    text-shadow: 0 0 10px rgba(56, 239, 125, 0.45);
+    letter-spacing: -0.5px;
 }
 
 .checkout_summary_row {
-    display: flex;                  /* Flexbox layout for total amount row and checkout actions */
-    flex-direction: column;         /* Stacks total and buttons vertically */
-    padding: 20px 16px 0 16px;         /* Inner spacing inside summary area */
-    gap: 10px;                      /* 10px spacing between summary elements */
-    width: 100%;                    /* Stretches to 100% width of checkout box */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
+/* Big Chunky Register Pay Key */
 .pay_btn {
-    background: #39a315;            /* Green background color for active state */
-    color: white;                   /* White text color */
-    border: none;                   /* No border */
-    border-radius: 4px;             /* 4px rounded corners for pay button */
-    padding: 10px;                  /* Inner padding inside pay button */
-    cursor: pointer;                /* Changes cursor to pointer hand on hover */
-    width: 100%;                    /* Button spans full width of its container */
-    font-size: 14px;                /* 14px font size for button text */
-    font-weight: bold;              /* Bold text for button */
-    box-shadow: 0 4px 0px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
+    background-color: var(--retro-green);
+    color: white;
+    border: var(--retro-border-thick);
+    border-radius: 7px;
+    padding: 14px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: var(--retro-shadow);
+    transition: all 0.1s ease;
+    user-select: none;
 }
 
 .pay_btn:hover {
-    background: #369514;            /* Darker green background on hover */
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); /* Slight downward shift on hover */
-    transform: translateY(-2px);    /* Slight downward shift on hover */
-    scale: 1.02;                    /* Slightly enlarges the button on hover */
-    transition: all 0.1s ease-in-out; /* Smooth 0.1s transition for hover effects */
+    background-color: var(--retro-green-hover);
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px var(--retro-dark);
+}
+
+.pay_btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--retro-dark);
 }
 
 .pay_btn:disabled {
-    background: #888;               /* Gray background color */
-    cursor: not-allowed;            /* Changes cursor to not-allowed hand on hover */
+    background-color: #D0C8BC;
+    color: #968E82;
+    border-color: #B0A89C;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }
 
-@media (max-width: 768px) {
+/* ==========================================================
+   RESPONSIVE LAYOUT (TABLET & MOBILE)
+   ========================================================== */
+@media (max-width: 900px) {
     .main_container {
-        flex-direction: column;     /* Stacks product catalog and checkout vertically on mobile/tablet */
+        flex-direction: column;
+        padding: 16px;
+        gap: 20px;
     }
 
     .products_header {
-        flex-direction: column;     /* Stacks title group and badge vertically on mobile */
-        align-items: flex-start;    /* Aligns items to the left edge */
-        gap: 8px;                   /* 8px spacing between stacked header rows */
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
     }
 
     .checkout_container {
-        width: 100%;                /* Expands checkout box to full width when stacked */
-        align-self: auto;           /* Resets stretch on mobile when stacked vertically */
+        width: 100%;
+        align-self: auto;
+    }
+
+    .product_cards_container {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        padding: 14px;
+    }
+}
+
+@media (max-width: 540px) {
+    .top_bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 16px;
+    }
+
+    .clock_display {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .main_container {
+        padding: 12px;
     }
 }

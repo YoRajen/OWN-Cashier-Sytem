@@ -15,7 +15,7 @@ function renderCart() {
 
     // If cart is empty, show empty cart message and disable clear button
     if (items.length === 0) {
-        cartContainer.innerHTML = '<span class="empty_cart_msg">No items in cart</span>';
+        cartContainer.innerHTML = '<span class="empty_cart_msg">-- TILL IS EMPTY --</span>';
         if (totalElem) totalElem.textContent = 'Rp0';
         if (clearBtn) clearBtn.disabled = true;
         return;
@@ -237,6 +237,19 @@ function updateProductCount(visibleCount, totalCount) {
     }
 }
 
+// Synchronizes the visual height of checkout_header to match products_header on desktop
+function syncHeaderHeights() {
+    const productsHeader = document.querySelector('.products_header');
+    const checkoutHeader = document.querySelector('.checkout_header');
+    if (!productsHeader || !checkoutHeader) return;
+
+    if (window.innerWidth > 900) {
+        checkoutHeader.style.minHeight = productsHeader.offsetHeight + 'px';
+    } else {
+        checkoutHeader.style.minHeight = '';
+    }
+}
+
 // Ensures cart updates when page is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Adds click event listeners to all product cards
@@ -258,5 +271,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initializes category filter and product count
     filterByCategory('all');
+
+    // Synchronizes header heights visually
+    syncHeaderHeights();
+    window.addEventListener('resize', syncHeaderHeights);
+    if (window.ResizeObserver) {
+        const ro = new ResizeObserver(syncHeaderHeights);
+        const productsHeader = document.querySelector('.products_header');
+        if (productsHeader) ro.observe(productsHeader);
+    }
 });
+
 

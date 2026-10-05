@@ -27,13 +27,23 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OWN Cashier</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- Retro Google Fonts: Space Grotesk (Neo-Retro Grotesque) & Space Mono (Mechanical Monospace / Dot-matrix) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=<?= time(); ?>">
 </head>
 
 <body>
     <div class="top_bar">
-        <span class="title">OWN Cashier</span>
-        <span class="date_time" id="date_time"></span>
+        <div class="brand_container">
+            <span class="title">OWN Cashier</span>
+        </div>
+        <div class="clock_display">
+            <span class="date_time" id="date_time"></span>
+        </div>
     </div>
     <div class="main_container">
         <div class="products_container">
@@ -64,11 +74,12 @@ $result = $conn->query($sql);
                             data-category-id="<?= htmlspecialchars($row['category_id']); ?>"
                             data-category-name="<?= htmlspecialchars($row['category_name']); ?>">
                             <div class="product_info">
+                                <span class="product_category_tag"><?= htmlspecialchars($row['category_name']); ?></span>
                                 <span class="product_name"><?= htmlspecialchars($row['product_name']); ?></span>
                                 <span class="product_price">Rp<?= number_format($row['product_price'], 0, ',', '.'); ?></span>
                             </div>
                             <div class="product_stock">
-                                <span class="stock_title">Stock</span>
+                                <span class="stock_title">STOCK</span>
                                 <span class="stock_count"><?= htmlspecialchars($row['product_stock']); ?></span>
                             </div>
                         </div>
@@ -82,20 +93,20 @@ $result = $conn->query($sql);
         </div>
         <div class="checkout_container">
             <div class="checkout_header">
-                <span class="checkout_title">Checkout</span>
+                <span class="checkout_title">Till // Receipt</span>
                 <button type="button" class="clear_cart_btn" id="clear_cart_btn" onclick="clearCart()"
-                    title="Remove all items from cart" disabled>Clear</button>
+                    title="Remove all items from cart" disabled>Reset</button>
             </div>
             <div class="cart_container" id="cart_container">
-                <span class="empty_cart_msg">No items in cart</span>
+                <span class="empty_cart_msg">-- TILL IS EMPTY --</span>
             </div>
             <div class="checkout_summary">
                 <div class="checkout_total_row">
-                    <span>Total</span>
+                    <span class="total_label">TOTAL DUE</span>
                     <span class="checkout_total_amount" id="checkout_total">Rp0</span>
                 </div>
                 <div class="checkout_summary_row">
-                    <button type="button" class="pay_btn" onclick="processPayment()">Pay</button>
+                    <button type="button" class="pay_btn" onclick="processPayment()">Charge // Pay</button>
                 </div>
             </div>
         </div>
