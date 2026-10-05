@@ -186,6 +186,57 @@ function updateClock() {
     dateTimeElem.textContent = `${dateStr} • ${timeStr}`;
 }
 
+// Current active category filter ('all' or specific category_id)
+let currentCategory = 'all';
+
+// Filters products displayed in the catalog by selected category ID
+function filterByCategory(categoryId, clickedBtn) {
+    currentCategory = String(categoryId);
+
+    // Update active state on category filter buttons
+    document.querySelectorAll('.category_btn').forEach(btn => {
+        const isMatch = clickedBtn ? btn === clickedBtn : btn.getAttribute('data-category') === currentCategory;
+        btn.classList.toggle('active', isMatch);
+    });
+
+    const cards = document.querySelectorAll('.product_card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const cardCategoryId = card.getAttribute('data-category-id');
+        // Match either 'all' or the specific category ID
+        if (currentCategory === 'all' || cardCategoryId === currentCategory) {
+            card.style.display = '';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    // Toggle message when no products match the selected category
+    const noProductsMsg = document.getElementById('no_products_filter_msg');
+    if (noProductsMsg) {
+        noProductsMsg.style.display = (visibleCount === 0 && cards.length > 0) ? 'block' : 'none';
+    }
+
+    // Update count badge in header
+    updateProductCount(visibleCount, cards.length);
+}
+
+// Updates the product count badge in the products header
+function updateProductCount(visibleCount, totalCount) {
+    const badge = document.getElementById('product_count_badge');
+    if (!badge) return;
+
+    if (totalCount === 0) {
+        badge.textContent = '0 products';
+    } else if (visibleCount === totalCount) {
+        badge.textContent = `${totalCount} products`;
+    } else {
+        badge.textContent = `${visibleCount} of ${totalCount} products`;
+    }
+}
+
 // Ensures cart updates when page is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Adds click event listeners to all product cards
@@ -204,4 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initializes live clock and updates every second
     updateClock();
     setInterval(updateClock, 1000);
+
+    // Initializes category filter and product count
+    filterByCategory('all');
 });
+

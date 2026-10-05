@@ -1,10 +1,21 @@
 <?php
 require_once 'db.php';
 
-$sql = "SELECT p.product_id, p.product_name, p.product_price, p.product_stock, c.category_name 
+// Fetch all categories for the filter dropdown
+$categories = [];
+$catSql = "SELECT category_id, category_code, category_name FROM categories ORDER BY category_id ASC";
+$catResult = $conn->query($catSql);
+if ($catResult && $catResult->num_rows > 0) {
+    while ($catRow = $catResult->fetch_assoc()) {
+        $categories[] = $catRow;
+    }
+}
+
+// Fetch products with their category information, sorted by category and product ID
+$sql = "SELECT p.product_id, p.product_name, p.product_price, p.product_stock, p.category_id, c.category_name 
         FROM products p
         JOIN categories c ON p.category_id = c.category_id
-        ORDER BY p.product_id ASC";
+        ORDER BY c.category_id ASC, p.product_id ASC";
 
 $result = $conn->query($sql);
 ?>
@@ -26,14 +37,32 @@ $result = $conn->query($sql);
     </div>
     <div class="main_container">
         <div class="products_container">
-            <span class="products_title">Products</span>
+            <div class="products_header">
+                <div class="products_title_group">
+                    <span class="products_title">Products</span>
+                    <div class="category_filter_buttons" id="category_filter_buttons">
+                        <button type="button" class="category_btn active" data-category="all"
+                            onclick="filterByCategory('all', this)">All</button>
+                        <?php foreach ($categories as $cat): ?>
+                            <button type="button" class="category_btn"
+                                data-category="<?= htmlspecialchars($cat['category_id']); ?>"
+                                onclick="filterByCategory('<?= htmlspecialchars($cat['category_id']); ?>', this)">
+                                <?= htmlspecialchars($cat['category_name']); ?>
+                            </button>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <span class="product_count_badge" id="product_count_badge"></span>
+            </div>
             <div class="product_cards_container">
                 <?php if ($result && $result->num_rows > 0): ?>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <div class="product_card" data-id="<?= htmlspecialchars($row['product_id']); ?>"
                             data-name="<?= htmlspecialchars($row['product_name']); ?>"
                             data-price="<?= htmlspecialchars($row['product_price']); ?>"
-                            data-stock="<?= htmlspecialchars($row['product_stock']); ?>">
+                            data-stock="<?= htmlspecialchars($row['product_stock']); ?>"
+                            data-category-id="<?= htmlspecialchars($row['category_id']); ?>"
+                            data-category-name="<?= htmlspecialchars($row['category_name']); ?>">
                             <div class="product_info">
                                 <span class="product_name"><?= htmlspecialchars($row['product_name']); ?></span>
                                 <span class="product_price">Rp<?= number_format($row['product_price'], 0, ',', '.'); ?></span>
@@ -45,8 +74,10 @@ $result = $conn->query($sql);
                         </div>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <p>No products found.</p>
+                    <p class="no_products_msg">No products found.</p>
                 <?php endif; ?>
+                <p class="no_products_msg" id="no_products_filter_msg" style="display: none;">No products found in this
+                    category.</p>
             </div>
         </div>
         <div class="checkout_container">
