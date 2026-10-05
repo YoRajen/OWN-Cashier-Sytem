@@ -93,12 +93,12 @@ $result = $conn->query($sql);
         </div>
         <div class="checkout_container">
             <div class="checkout_header">
-                <span class="checkout_title">Till // Receipt</span>
+                <span class="checkout_title">CHECKOUT</span>
                 <button type="button" class="clear_cart_btn" id="clear_cart_btn" onclick="clearCart()"
                     title="Remove all items from cart" disabled>Reset</button>
             </div>
             <div class="cart_container" id="cart_container">
-                <span class="empty_cart_msg">-- TILL IS EMPTY --</span>
+                <span class="empty_cart_msg">-- CART IS EMPTY --</span>
             </div>
             <div class="checkout_summary">
                 <div class="checkout_total_row">
@@ -106,7 +106,7 @@ $result = $conn->query($sql);
                     <span class="checkout_total_amount" id="checkout_total">Rp0</span>
                 </div>
                 <div class="checkout_summary_row">
-                    <button type="button" class="pay_btn" onclick="processPayment()">Charge // Pay</button>
+                    <button type="button" class="pay_btn" onclick="processPayment()">PAY</button>
                 </div>
             </div>
         </div>

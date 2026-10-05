@@ -15,7 +15,7 @@ function renderCart() {
 
     // If cart is empty, show empty cart message and disable clear button
     if (items.length === 0) {
-        cartContainer.innerHTML = '<span class="empty_cart_msg">-- TILL IS EMPTY --</span>';
+        cartContainer.innerHTML = '<span class="empty_cart_msg">-- CART IS EMPTY --</span>';
         if (totalElem) totalElem.textContent = 'Rp0';
         if (clearBtn) clearBtn.disabled = true;
         return;
@@ -46,6 +46,11 @@ function renderCart() {
             </div>
             <div class="cart_item_price">
                 <span>${formatRupiah(subtotal)}</span>
+            </div>
+            <div class="cart_item_remove">
+                <button type="button" class="remove_btn" onclick="removeFromCart('${item.id}')" title="Remove item">
+                    <img src="assets/trash-svgrepo-com.svg" alt="Remove" class="trash_icon">
+                </button>
             </div>
         `;
         cartContainer.appendChild(cartItem);
@@ -98,6 +103,11 @@ function updateQty(id, delta) {
     } else {
         cart[id].qty = newQty;
     }
+    renderCart();
+}
+
+function removeFromCart(id) {
+    delete cart[id];
     renderCart();
 }
 
