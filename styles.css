@@ -1,27 +1,31 @@
 /* ==========================================================
    OWN CASHIER - RETRO POS & HARDWARE SYSTEM DESIGN
-   Aesthetic: Neo-Retro / 80s Hardware POS & Terminal Aesthetic
+   Aesthetic: Neo-Retro / 80s Industrial Hardware POS Aesthetic
+   Palette:
+     - --color-black   : rgb(0, 0, 0)
+     - --color-slate   : rgb(35, 61, 77)
+     - --color-orange  : rgb(254, 127, 45)
+     - --color-chassis : rgb(234, 236, 240)
+     - --color-white   : #FFFFFF (Contrast Helper)
    ========================================================== */
 
 :root {
-    --retro-dark: #201D1A;              /* Deep charcoal/espresso hardware frame color */
-    --retro-bg: #F4EFE6;                /* Vintage warm parchment/canvas background */
-    --retro-panel: #FAF5ED;             /* Warm off-white chassis panel */
-    --retro-card: #FFFDF9;              /* Crisp warm ivory card background */
-    --retro-paper: #FFFDF8;             /* Paper receipt color */
-    --retro-orange: #FF6B35;            /* 70s-80s burnt orange primary accent */
-    --retro-amber: #F7B801;             /* Vintage mustard gold / amber */
-    --retro-green: #0E9F57;             /* Classic mechanical cash register green */
-    --retro-green-hover: #0B8347;       /* Darker green hover state */
-    --retro-green-glow: #38EF7D;        /* Illuminated green phosphor LCD glow */
-    --retro-red: #D9383A;               /* Retro signal red for cancel/clear */
-    --retro-red-hover: #B82C2E;         /* Darker red hover state */
-    --retro-muted: #82786D;             /* Faded vintage typewriter ink */
-    --retro-border: 2px solid #201D1A;  /* Standard crisp retro hard outline */
-    --retro-border-thick: 2.5px solid #201D1A; /* Outer container heavy outline */
-    --retro-shadow-sm: 2px 2px 0px #201D1A;    /* Small keycap shadow */
-    --retro-shadow: 3px 3px 0px #201D1A;       /* Standard tactile drop shadow */
-    --retro-shadow-lg: 5px 5px 0px #201D1A;    /* Heavy chassis container shadow */
+    /* Color Palette */
+    --color-black: rgb(0, 0, 0);              /* Deep terminal frame & outlines */
+    --color-slate: rgb(35, 61, 77);           /* Deep slate petrol hardware accent */
+    --color-orange: rgb(254, 127, 45);        /* High-energy retro industrial orange */
+    --color-chassis: rgb(234, 236, 240);      /* Cool retro machine surface */
+    --color-white: #FFFFFF;                   /* Contrast helper */
+
+    /* Tactile Borders & Drop Shadows */
+    --retro-border: 2px solid var(--color-black);
+    --retro-border-thick: 2.5px solid var(--color-black);
+    --retro-border-dashed: 2px dashed rgba(35, 61, 77, 0.28);
+    --retro-shadow-sm: 2px 2px 0px var(--color-black);
+    --retro-shadow: 3px 3px 0px var(--color-black);
+    --retro-shadow-lg: 5px 5px 0px var(--color-black);
+
+    /* Typography */
     --font-heading: 'Space Grotesk', -apple-system, sans-serif;
     --font-mono: 'Space Mono', 'Courier Prime', monospace;
 }
@@ -41,9 +45,9 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: var(--retro-card);
+    background-color: var(--color-chassis);
     font-family: var(--font-heading);
-    color: var(--retro-dark);
+    color: var(--color-black);
     -webkit-font-smoothing: antialiased;
 }
 
@@ -57,17 +61,17 @@ span, button, select, label, input {
 }
 
 ::-webkit-scrollbar-track {
-    background: #EFE8DC;
-    border-left: 1px solid var(--retro-dark);
+    background: rgba(35, 61, 77, 0.08);
+    border-left: 1px solid var(--color-black);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--retro-dark);
+    background: var(--color-slate);
     border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--retro-orange);
+    background: var(--color-orange);
 }
 
 /* ==========================================================
@@ -77,11 +81,11 @@ span, button, select, label, input {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--retro-dark);
+    background-color: var(--color-slate);
     padding: 14px 24px;
     flex-shrink: 0;
-    border-bottom: 3px solid #141210;
-    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.12);
+    border-bottom: 3px solid var(--color-black);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
 }
 
 .brand_container {
@@ -94,7 +98,7 @@ span, button, select, label, input {
     font-size: 22px;
     font-weight: 700;
     letter-spacing: 0.5px;
-    color: #FFFDF9;
+    color: var(--color-white);
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
 }
 
@@ -102,8 +106,8 @@ span, button, select, label, input {
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: #101815;
-    border: 2px solid #33403A;
+    background-color: var(--color-black);
+    border: 2px solid rgba(234, 236, 240, 0.25);
     border-radius: 5px;
     padding: 6px 14px;
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8), 0 2px 0 rgba(255, 255, 255, 0.1);
@@ -119,8 +123,8 @@ span, button, select, label, input {
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.8px;
-    color: var(--retro-green-glow);
-    text-shadow: 0 0 7px rgba(56, 239, 125, 0.55);
+    color: var(--color-orange);
+    text-shadow: 0 0 8px rgba(254, 127, 45, 0.65);
     user-select: none;
 }
 
@@ -141,7 +145,7 @@ span, button, select, label, input {
    PRODUCTS SECTION - RETRO HARDWARE FRAME
    ========================================================== */
 .products_container {
-    background-color: var(--retro-panel);
+    background-color: var(--color-chassis);
     flex: 1;
     min-width: 0;
     display: flex;
@@ -157,7 +161,7 @@ span, button, select, label, input {
     justify-content: space-between;
     align-items: center;
     padding: 0 20px 14px 20px;
-    border-bottom: 2px dashed #D5CCC0;
+    border-bottom: var(--retro-border-dashed);
     gap: 12px;
     flex-wrap: wrap;
     min-height: 52px;
@@ -176,7 +180,7 @@ span, button, select, label, input {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--retro-dark);
+    color: var(--color-black);
 }
 
 .category_filter_buttons {
@@ -192,8 +196,8 @@ span, button, select, label, input {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    color: var(--retro-dark);
-    background-color: var(--retro-card);
+    color: var(--color-slate);
+    background-color: var(--color-white);
     border: var(--retro-border);
     border-radius: 5px;
     padding: 6px 14px;
@@ -205,29 +209,32 @@ span, button, select, label, input {
 }
 
 .category_btn:hover {
-    background-color: #FFF3E2;
+    background-color: rgba(254, 127, 45, 0.15);
+    color: var(--color-black);
     transform: translate(-1px, -1px);
-    box-shadow: 3px 3px 0px var(--retro-dark);
+    box-shadow: 3px 3px 0px var(--color-black);
 }
 
 .category_btn.active {
-    background-color: var(--retro-orange);
-    color: white;
-    box-shadow: 1px 1px 0px var(--retro-dark);
+    background-color: var(--color-orange);
+    color: var(--color-black);
+    box-shadow: 1px 1px 0px var(--color-black);
     transform: translate(2px, 2px); /* Pressed mechanical key effect */
 }
 
 .category_btn.active:hover {
-    background-color: #E85B26;
-    color: white;
+    background-color: var(--color-orange);
+    filter: brightness(0.92);
+    color: var(--color-black);
 }
 
 .product_count_badge {
     font-family: var(--font-mono);
     font-size: 11.5px;
     font-weight: 700;
-    color: var(--retro-amber);
-    background-color: var(--retro-dark);
+    color: var(--color-orange);
+    background-color: var(--color-slate);
+    border: 1.5px solid var(--color-black);
     padding: 4px 10px;
     border-radius: 4px;
     letter-spacing: 0.5px;
@@ -240,7 +247,8 @@ span, button, select, label, input {
    ========================================================== */
 .product_cards_container {
     flex: 1;
-    background-color: #F8F3EA;
+    background-color: rgba(35, 61, 77, 0.04);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
     gap: 16px;
@@ -250,7 +258,7 @@ span, button, select, label, input {
 }
 
 .product_card {
-    background-color: var(--retro-card);
+    background-color: var(--color-white);
     border: var(--retro-border);
     border-radius: 8px;
     padding: 14px 16px;
@@ -275,25 +283,25 @@ span, button, select, label, input {
     left: 0;
     right: 0;
     height: 3px;
-    background: var(--retro-dark);
+    background: var(--color-slate);
     opacity: 0;
     transition: opacity 0.12s ease;
 }
 
 .product_card:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0px var(--retro-dark);
-    background-color: #FFFEFB;
+    box-shadow: 5px 5px 0px var(--color-black);
+    background-color: var(--color-white);
 }
 
 .product_card:hover::before {
     opacity: 1;
-    background: var(--retro-orange);
+    background: var(--color-orange);
 }
 
 .product_card:active {
     transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0px var(--retro-dark);
+    box-shadow: 1px 1px 0px var(--color-black);
 }
 
 .product_info {
@@ -303,22 +311,22 @@ span, button, select, label, input {
     flex: 1;
     min-width: 0;
     overflow: hidden;
-    gap: 3px;
+    gap: 4px;
 }
 
 .product_category_tag {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 10.5px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    color: var(--retro-orange);
+    color: var(--color-slate);
 }
 
 .product_name {
     font-size: 16.5px;
     font-weight: 700;
-    color: var(--retro-dark);
+    color: var(--color-black);
     line-height: 1.25;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -331,7 +339,7 @@ span, button, select, label, input {
     font-family: var(--font-mono);
     font-size: 14.5px;
     font-weight: 700;
-    color: var(--retro-green);
+    color: var(--color-slate);
     letter-spacing: -0.3px;
 }
 
@@ -340,7 +348,7 @@ span, button, select, label, input {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-left: 2px dashed #D5CCC0;
+    border-left: var(--retro-border-dashed);
     padding-left: 14px;
     flex-shrink: 0;
     gap: 2px;
@@ -352,14 +360,14 @@ span, button, select, label, input {
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1px;
-    color: var(--retro-muted);
+    color: rgba(35, 61, 77, 0.72);
 }
 
 .stock_count {
     font-family: var(--font-mono);
     font-size: 26px;
     font-weight: 700;
-    color: var(--retro-dark);
+    color: var(--color-black);
     line-height: 1;
 }
 
@@ -367,7 +375,7 @@ span, button, select, label, input {
     grid-column: 1 / -1;
     text-align: center;
     padding: 48px 16px;
-    color: var(--retro-muted);
+    color: rgba(35, 61, 77, 0.72);
     font-family: var(--font-mono);
     font-size: 14px;
     font-weight: 700;
@@ -379,7 +387,7 @@ span, button, select, label, input {
    CHECKOUT SECTION - TILL & RECEIPT ROLL
    ========================================================== */
 .checkout_container {
-    background-color: var(--retro-panel);
+    background-color: var(--color-chassis);
     border: var(--retro-border-thick);
     border-radius: 10px;
     box-shadow: var(--retro-shadow-lg);
@@ -398,7 +406,7 @@ span, button, select, label, input {
     justify-content: center;
     align-items: center;
     padding: 0 20px 14px 20px;
-    border-bottom: 2px dashed #D5CCC0;
+    border-bottom: var(--retro-border-dashed);
     min-height: 52px;
     box-sizing: border-box;
 }
@@ -408,7 +416,7 @@ span, button, select, label, input {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--retro-dark);
+    color: var(--color-black);
     margin: 0;
     line-height: 1.2;
 }
@@ -418,8 +426,8 @@ span, button, select, label, input {
     right: 20px;
     top: calc((100% - 14px) / 2);
     transform: translateY(-50%);
-    background: var(--retro-red);
-    color: white;
+    background: var(--color-slate);
+    color: var(--color-white);
     border: var(--retro-border);
     border-radius: 5px;
     padding: 5px 12px;
@@ -433,29 +441,30 @@ span, button, select, label, input {
 }
 
 .clear_cart_btn:hover {
-    background: var(--retro-red-hover);
+    background: var(--color-black);
+    color: var(--color-orange);
     transform: translate(-1px, calc(-50% - 1px));
-    box-shadow: 3px 3px 0px var(--retro-dark);
+    box-shadow: 3px 3px 0px var(--color-black);
 }
 
 .clear_cart_btn:active {
     transform: translate(1px, calc(-50% + 1px));
-    box-shadow: 0px 0px 0px var(--retro-dark);
+    box-shadow: 0px 0px 0px var(--color-black);
 }
 
 .clear_cart_btn:disabled {
-    background: #D8D0C4;
-    color: #9E968B;
-    border-color: #B8B0A4;
+    background: rgba(35, 61, 77, 0.12);
+    color: rgba(35, 61, 77, 0.4);
+    border-color: rgba(0, 0, 0, 0.2);
     cursor: not-allowed;
     box-shadow: none;
     transform: translateY(-50%);
 }
 
 .cart_container {
-    background-color: var(--retro-paper);
-    border-top: 2px solid var(--retro-dark);
-    border-bottom: 2px solid var(--retro-dark);
+    background-color: var(--color-white);
+    border-top: 2px solid var(--color-black);
+    border-bottom: 2px solid var(--color-black);
     padding: 14px 18px;
     width: 100%;
     flex: 1;
@@ -473,7 +482,7 @@ span, button, select, label, input {
     justify-content: space-between;
     width: 100%;
     padding: 6px 0;
-    border-bottom: 1px dashed #DDD5C9;
+    border-bottom: 1px dashed rgba(35, 61, 77, 0.25);
     font-family: var(--font-mono);
 }
 
@@ -493,7 +502,7 @@ span, button, select, label, input {
     font-family: var(--font-heading);
     font-size: 14px;
     font-weight: 700;
-    color: var(--retro-dark);
+    color: var(--color-black);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -502,7 +511,7 @@ span, button, select, label, input {
 .cart_item_info span:last-child {
     font-family: var(--font-mono);
     font-size: 12px;
-    color: var(--retro-muted);
+    color: rgba(35, 61, 77, 0.72);
 }
 
 .cart_item_qty {
@@ -518,7 +527,7 @@ span, button, select, label, input {
     font-weight: 700;
     min-width: 18px;
     text-align: center;
-    color: var(--retro-dark);
+    color: var(--color-black);
 }
 
 .qty_btn {
@@ -526,7 +535,8 @@ span, button, select, label, input {
     height: 24px;
     border-radius: 4px;
     border: var(--retro-border);
-    background: #EFE8DC;
+    background: var(--color-chassis);
+    color: var(--color-black);
     cursor: pointer;
     font-family: var(--font-mono);
     font-weight: 700;
@@ -537,26 +547,27 @@ span, button, select, label, input {
     padding: 0;
     line-height: 1;
     user-select: none;
-    box-shadow: 1.5px 1.5px 0px var(--retro-dark);
+    box-shadow: 1.5px 1.5px 0px var(--color-black);
     transition: all 0.08s ease;
 }
 
 .qty_btn:hover {
-    background: #E2D9CB;
+    background: var(--color-orange);
+    color: var(--color-black);
     transform: translate(-1px, -1px);
-    box-shadow: 2.5px 2.5px 0px var(--retro-dark);
+    box-shadow: 2.5px 2.5px 0px var(--color-black);
 }
 
 .qty_btn:active {
     transform: translate(1px, 1px);
-    box-shadow: 0px 0px 0px var(--retro-dark);
+    box-shadow: 0px 0px 0px var(--color-black);
 }
 
 .cart_item_price {
     font-family: var(--font-mono);
     font-size: 13.5px;
     font-weight: 700;
-    color: var(--retro-dark);
+    color: var(--color-black);
     text-align: right;
     min-width: 65px;
 }
@@ -573,30 +584,30 @@ span, button, select, label, input {
     height: 24px;
     border-radius: 4px;
     border: var(--retro-border);
-    background: #EFE8DC;
+    background: var(--color-orange);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
-    box-shadow: 1.5px 1.5px 0px var(--retro-dark);
+    box-shadow: 1.5px 1.5px 0px var(--color-black);
     transition: all 0.08s ease;
 }
 
 .remove_btn:hover {
-    background: #FCE8E6;
-    border-color: var(--retro-red);
+    background: var(--color-slate);
+    border-color: var(--color-black);
     transform: translate(-1px, -1px);
-    box-shadow: 2.5px 2.5px 0px var(--retro-dark);
+    box-shadow: 2.5px 2.5px 0px var(--color-black);
 }
 
 .remove_btn:hover .trash_icon {
-    filter: invert(24%) sepia(85%) saturate(3000%) hue-rotate(345deg) brightness(90%) contrast(90%);
+    filter: brightness(0) invert(1);
 }
 
 .remove_btn:active {
     transform: translate(1px, 1px);
-    box-shadow: 0px 0px 0px var(--retro-dark);
+    box-shadow: 0px 0px 0px var(--color-black);
 }
 
 .trash_icon {
@@ -608,7 +619,7 @@ span, button, select, label, input {
 }
 
 .empty_cart_msg {
-    color: var(--retro-muted);
+    color: rgba(35, 61, 77, 0.72);
     font-family: var(--font-mono);
     font-size: 13px;
     font-weight: 700;
@@ -624,22 +635,22 @@ span, button, select, label, input {
 
 /* ==========================================================
    CHECKOUT SUMMARY & CASH REGISTER PAY KEY
-   ========================================================== */
+   ========================================================= */
 .checkout_summary {
     display: flex;
     flex-direction: column;
     padding: 16px 20px 0 20px;
     gap: 14px;
     width: 100%;
-    border-top: 2px dashed #D5CCC0;
+    border-top: var(--retro-border-dashed);
 }
 
 .checkout_total_row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #101815;
-    border: var(--retro-border);
+    background-color: var(--color-black);
+    border: 2px solid var(--color-slate);
     border-radius: 6px;
     padding: 10px 16px;
     box-shadow: var(--retro-shadow-sm);
@@ -650,15 +661,15 @@ span, button, select, label, input {
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 1px;
-    color: #98A69E;
+    color: rgba(234, 236, 240, 0.7);
 }
 
 .checkout_total_amount {
     font-family: var(--font-mono);
     font-size: 21px;
     font-weight: 700;
-    color: var(--retro-green-glow);
-    text-shadow: 0 0 10px rgba(56, 239, 125, 0.45);
+    color: var(--color-orange);
+    text-shadow: 0 0 10px rgba(254, 127, 45, 0.55);
     letter-spacing: -0.5px;
 }
 
@@ -670,8 +681,8 @@ span, button, select, label, input {
 
 /* Big Chunky Register Pay Key */
 .pay_btn {
-    background-color: var(--retro-green);
-    color: white;
+    background-color: var(--color-orange);
+    color: var(--color-black);
     border: var(--retro-border-thick);
     border-radius: 7px;
     padding: 14px;
@@ -680,27 +691,28 @@ span, button, select, label, input {
     font-size: 15px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     box-shadow: var(--retro-shadow);
     transition: all 0.1s ease;
     user-select: none;
 }
 
 .pay_btn:hover {
-    background-color: var(--retro-green-hover);
+    background-color: var(--color-slate);
+    color: var(--color-white);
     transform: translate(-1px, -1px);
-    box-shadow: 4px 4px 0px var(--retro-dark);
+    box-shadow: 4px 4px 0px var(--color-black);
 }
 
 .pay_btn:active {
     transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0px var(--retro-dark);
+    box-shadow: 1px 1px 0px var(--color-black);
 }
 
 .pay_btn:disabled {
-    background-color: #D0C8BC;
-    color: #968E82;
-    border-color: #B0A89C;
+    background-color: rgba(35, 61, 77, 0.15);
+    color: rgba(35, 61, 77, 0.4);
+    border-color: rgba(0, 0, 0, 0.2);
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
