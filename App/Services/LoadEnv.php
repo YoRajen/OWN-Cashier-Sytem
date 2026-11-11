@@ -24,20 +24,25 @@ class LoadEnv
 
     /**
      * Load environment variables from a specified .env folder.
-     * @param string $folderPath The path to the .env folder.
+     * @param string $path The path to the .env folder.
      * @throws \InvalidArgumentException If the specified folder path does not exist.
      * @throws \RuntimeException If there are issues reading the .env files.
      * @return LoadEnv An instance of LoadEnv after loading the environment variables.
      */
-    public static function fromFile(string $folderPath): LoadEnv
+    public static function fromFile(string $path): LoadEnv
     {
         // Check Folder Existence
-        if (!is_dir($folderPath)) {
-            throw new \InvalidArgumentException("The specified folder path does not exist: $folderPath");
+        if (!is_dir($path)) {
+            $envFiles = glob(rtrim($path, '/\\') . '/*.env') ?: [];
+        } elseif (is_file($path)){
+            $envFiles = [$path];
+        }
+        else {
+            throw new \InvalidArgumentException("The specified folder path does not exist: $path");
         }
 
         // Loop through the folder to find .env files
-        $envFiles = glob(rtrim($folderPath, '/\\') . '/*.env') ?: [];
+        
         $envVariables = [];
         $absolutePath = [];
 
@@ -58,7 +63,7 @@ class LoadEnv
         }
 
         $instance = new self();
-        $instance->filePath = $folderPath;
+        $instance->filePath = $path;
         $instance->absolutePath = $absolutePath;
         $instance->envVariables = $envVariables;
         return $instance;
