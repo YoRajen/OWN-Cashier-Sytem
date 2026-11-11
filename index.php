@@ -1,4 +1,5 @@
 <?php
+    require 'autoload.php';
     use App\Models\Categories;
     use App\Models\Products;
     use App\Services\DatabaseConnection;
@@ -10,7 +11,7 @@
 
     $products = new Products($db);
     $categories = new Categories($db);
-    
+
     // $catSql = "SELECT category_id, category_code, category_name FROM categories ORDER BY category_id ASC";
     $catResult = $categories->getCachedCategories();
     usort($catResult, fn (array $a, array $b):int => (int)$a['id'] <=> (int)$b['id']);
