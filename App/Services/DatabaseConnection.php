@@ -162,9 +162,9 @@ class DatabaseConnection{
 
     public function __destruct()
     {
-        $this->connection = null; // Close the connection when the object is destroyed
+        self::$connection = null; // Close the connection when the object is destroyed
+        self::$instance = null; // Clear the singleton instance when the object is destroyed
         $this->curStatement = null; // Close the statement when the object is destroyed
-        $this->instance = null; // Clear the singleton instance when the object is destroyed
     }
 
 }
