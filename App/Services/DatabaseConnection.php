@@ -109,7 +109,7 @@ class DatabaseConnection{
      */
     public function query(string $sql, array $params = []): bool
     {
-        if ($this->connection === null) {
+        if (self::$connection === null) {
             throw new \PDOException("Database connection is not established.");
         }
         $this->curStatement = self::$connection->prepare($sql);
@@ -153,7 +153,7 @@ class DatabaseConnection{
      */
     public function getLastInsertId(): string
     {
-        if ($this->connection === null) {
+        if (self::$connection === null) {
             throw new \PDOException("Database connection is not established.");
         }
         return self::$connection->lastInsertId();
