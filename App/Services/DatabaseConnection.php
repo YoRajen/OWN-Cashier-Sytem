@@ -112,7 +112,7 @@ class DatabaseConnection{
         if ($this->connection === null) {
             throw new \PDOException("Database connection is not established.");
         }
-        $this->curStatement = $this->connection->prepare($sql);
+        $this->curStatement = self::$connection->prepare($sql);
         return $this->curStatement->execute($params);
     }
 
@@ -156,14 +156,12 @@ class DatabaseConnection{
         if ($this->connection === null) {
             throw new \PDOException("Database connection is not established.");
         }
-        return $this->connection->lastInsertId();
+        return self::$connection->lastInsertId();
     }
     
 
     public function __destruct()
     {
-        self::$connection = null; // Close the connection when the object is destroyed
-        self::$instance = null; // Clear the singleton instance when the object is destroyed
         $this->curStatement = null; // Close the statement when the object is destroyed
     }
 
