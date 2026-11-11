@@ -14,7 +14,7 @@
 
     // $catSql = "SELECT category_id, category_code, category_name FROM categories ORDER BY category_id ASC";
     $catResult = $categories->getCachedCategories();
-    usort($catResult, fn (array $a, array $b):int => (int)$a['id'] <=> (int)$b['id']);
+    usort($catResult, fn (array $a, array $b):int => (int)$a['category_id'] <=> (int)$b['category_id']);
 
 
     // Fetch products with their category information, sorted by category and product ID
