@@ -37,20 +37,19 @@ class LoadEnv
         }
 
         // Loop through the folder to find .env files
-        $envFiles = glob($folderPath . '/*.env');
+        $envFiles = glob(rtrim($folderPath, '/\\') . '/*.env') ?: [];
         $envVariables = [];
         $absolutePath = [];
 
         foreach ($envFiles as $file) {
             $absolutePath[] = realpath($file);
-            try {
-                $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-            } catch (\Exception $e) {
-                throw new \RuntimeException("Error reading .env file: " . $e->getMessage());
+            $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            if ($lines === false) {
+                throw new \RuntimeException("Error reading env file: $file");
             }
             
             foreach ($lines as $line) {
-                if (strpos(trim($line), '#') === 0) {
+                if ($line === '' || $line[0] === '#' || strpos($line, '=') === false) {
                     continue; // Skip comments
                 }
                 [$name, $value] = explode('=', $line, 2);
