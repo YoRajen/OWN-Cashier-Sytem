@@ -1,97 +1,100 @@
 <?php
+
+declare(strict_types=1);
+
+use App\Models\Products;
+use App\Services\DatabaseConnection;
+
 header('Content-Type: application/json');
-require_once __DIR__ . '/../db.php';
 
-// Read and parse incoming JSON payload from the request body
-$rawInput = file_get_contents('php://input');
-$data = json_decode($rawInput, true);
+require_once __DIR__ . '/../autoload.php';
 
-// Validate that cart items were provided
-if (!$data || !isset($data['items']) || !is_array($data['items']) || empty($data['items'])) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Cart is empty or invalid data provided.'
-    ]);
+/**
+ * Send a JSON response and stop the script.
+ */
+function respond(bool $success, string $message, int $status = 200): never
+{
+    http_response_code($status);
+    echo json_encode(['success' => $success, 'message' => $message]);
     exit;
 }
 
-$items = $data['items'];
+// Read and parse the incoming JSON payload
+$data = json_decode(file_get_contents('php://input') ?: '', true);
 
-$conn->begin_transaction();
+if (!is_array($data) || !isset($data['items']) || !is_array($data['items']) || $data['items'] === []) {
+    respond(false, 'Cart is empty or invalid data provided.', 400);
+}
+
+// Normalize the cart: validate each item and merge duplicate product IDs
+$cart = [];
+foreach ($data['items'] as $item) {
+    $productId = isset($item['id']) ? trim((string) $item['id']) : '';
+    $qty = isset($item['qty']) ? (int) $item['qty'] : 0;
+
+    if ($productId === '' || $qty <= 0) {
+        continue; // skip invalid items or quantities
+    }
+    $cart[$productId] = ($cart[$productId] ?? 0) + $qty;
+}
+
+if ($cart === []) {
+    respond(false, 'No valid items to checkout.', 400);
+}
+
+$pdo = null;
 
 try {
-    // Prepared statement to check current stock and lock the row to avoid race conditions
-    $checkStmt = $conn->prepare("SELECT product_name, product_stock FROM products WHERE product_id = ? FOR UPDATE");
+    DatabaseConnection::initialize();
+    $db  = DatabaseConnection::getConnectionInstance();
+    $pdo = DatabaseConnection::getConnection();
 
-    // Prepared statement to decrement the purchased quantity from product_stock
-    $updateStmt = $conn->prepare("UPDATE products SET product_stock = product_stock - ? WHERE product_id = ?");
+    $pdo->beginTransaction();
 
-    if (!$checkStmt || !$updateStmt) {
-        throw new Exception("Failed to prepare database statements: " . $conn->error);
-    }
+    foreach ($cart as $productId => $qty) {
+        $productId = (string) $productId; // numeric-looking IDs become int array keys
 
-    $itemsProcessed = 0;
+        // Lock the row so concurrent checkouts can't oversell the same stock
+        $db->query(
+            'SELECT product_name, product_stock FROM products WHERE product_id = :id FOR UPDATE',
+            ['id' => $productId]
+        );
+        $rows = $db->getFetchResults();
 
-    foreach ($items as $item) {
-        $productId = isset($item['id']) ? trim((string) $item['id']) : '';
-        $qty = isset($item['qty']) ? (int) $item['qty'] : 0;
-
-        // Skip invalid items or quantities
-        if ($productId === '' || $qty <= 0) {
-            continue;
+        if ($rows === []) {
+            throw new RuntimeException("Product with ID '{$productId}' was not found.");
         }
 
-        // Query product information from database (product_id is a VARCHAR code like 'DR001')
-        $checkStmt->bind_param("s", $productId);
-        $checkStmt->execute();
-        $result = $checkStmt->get_result();
+        $productName  = $rows[0]['product_name'];
+        $currentStock = (int) $rows[0]['product_stock'];
 
-        if ($result->num_rows === 0) {
-            throw new Exception("Product with ID '{$productId}' was not found.");
-        }
-
-        $product = $result->fetch_assoc();
-        $currentStock = (int) $product['product_stock'];
-        $productName = $product['product_name'];
-
-        // Verify that enough stock is available for the checkout quantity
         if ($currentStock < $qty) {
-            throw new Exception("Insufficient stock for '{$productName}'. Available: {$currentStock}, requested: {$qty}.");
+            throw new RuntimeException(
+                "Insufficient stock for '{$productName}'. Available: {$currentStock}, requested: {$qty}."
+            );
         }
 
-        // Deduct the checked out quantity from product stock (qty is INT, productId is VARCHAR)
-        $updateStmt->bind_param("is", $qty, $productId);
-        if (!$updateStmt->execute()) {
-            throw new Exception("Failed to update stock for '{$productName}': " . $updateStmt->error);
-        }
-
-        $itemsProcessed++;
+        // Deduct the purchased quantity
+        $db->query(
+            'UPDATE products SET product_stock = product_stock - :qty WHERE product_id = :id',
+            ['qty' => $qty, 'id' => $productId]
+        );
     }
 
-    if ($itemsProcessed === 0) {
-        throw new Exception("No valid items to checkout.");
+    $pdo->commit();
+
+    respond(true, 'Checkout successful! Products have been subtracted from inventory.');
+} catch (RuntimeException $e) {
+    // Expected business errors (unknown product, not enough stock)
+    if ($pdo !== null && $pdo->inTransaction()) {
+        $pdo->rollBack();
     }
-
-    // Commit the transaction after all products have been successfully deducted
-    $conn->commit();
-
-    echo json_encode([
-        'success' => true,
-        'message' => 'Checkout successful! Products have been subtracted from inventory.'
-    ]);
-} catch (Exception $e) {
-    // Roll back all changes if an error or stock deficit occurs
-    $conn->rollback();
-
-    echo json_encode([
-        'success' => false,
-        'message' => $e->getMessage()
-    ]);
-} finally {
-    // Clean up statement and connection resources
-    if (isset($checkStmt) && $checkStmt)
-        $checkStmt->close();
-    if (isset($updateStmt) && $updateStmt)
-        $updateStmt->close();
-    $conn->close();
+    respond(false, $e->getMessage(), 409);
+} catch (Throwable $e) {
+    // Unexpected errors (database down, SQL error): log details, hide them from the client
+    if ($pdo !== null && $pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+    error_log('Checkout error: ' . $e->getMessage());
+    respond(false, 'An internal error occurred during checkout. Please try again.', 500);
 }
