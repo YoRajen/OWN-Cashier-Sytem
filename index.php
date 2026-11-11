@@ -1,23 +1,29 @@
 <?php
-require_once 'db.php';
+    require 'autoload.php';
+    use App\Models\Categories;
+    use App\Models\Products;
+    use App\Services\DatabaseConnection;
 
-// Fetch all categories for the filter dropdown
-$categories = [];
-$catSql = "SELECT category_id, category_code, category_name FROM categories ORDER BY category_id ASC";
-$catResult = $conn->query($catSql);
-if ($catResult && $catResult->num_rows > 0) {
-    while ($catRow = $catResult->fetch_assoc()) {
-        $categories[] = $catRow;
-    }
-}
 
-// Fetch products with their category information, sorted by category and product ID
-$sql = "SELECT p.product_id, p.product_name, p.product_price, p.product_stock, p.category_id, c.category_name 
-        FROM products p
-        JOIN categories c ON p.category_id = c.category_id
-        ORDER BY c.category_id ASC, p.product_id ASC";
+    // Fetch all categories for the filter dropdown
+    DatabaseConnection::initialize();
+    $db = DatabaseConnection::getConnectionInstance();
 
-$result = $conn->query($sql);
+    $products = new Products($db);
+    $categories = new Categories($db);
+
+    // $catSql = "SELECT category_id, category_code, category_name FROM categories ORDER BY category_id ASC";
+    $catResult = $categories->getCachedCategories();
+    usort($catResult, fn (array $a, array $b):int => (int)$a['category_id'] <=> (int)$b['category_id']);
+
+
+    // Fetch products with their category information, sorted by category and product ID
+    // $sql = "SELECT p.product_id, p.product_name, p.product_price, p.product_stock, p.category_id, c.category_name 
+    //         FROM products p
+    //         JOIN categories c ON p.category_id = c.category_id
+    //         ORDER BY c.category_id ASC, p.product_id ASC";
+    $result = $products->getCachedProducts();
+    usort($result, fn(array $a, array $b):int => [$a['category_id'], $a['product_id']] <=> [$b['category_id'], $b['product_id']])
 ?>
 
 <!DOCTYPE html>
@@ -65,8 +71,8 @@ $result = $conn->query($sql);
                 <span class="product_count_badge" id="product_count_badge"></span>
             </div>
             <div class="product_cards_container">
-                <?php if ($result && $result->num_rows > 0): ?>
-                    <?php while ($row = $result->fetch_assoc()): ?>
+                <?php if ($result && count($result) > 0): ?>
+                    <?php foreach($result as $row): ?>
                         <div class="product_card" data-id="<?= htmlspecialchars($row['product_id']); ?>"
                             data-name="<?= htmlspecialchars($row['product_name']); ?>"
                             data-price="<?= htmlspecialchars($row['product_price']); ?>"
@@ -83,7 +89,7 @@ $result = $conn->query($sql);
                                 <span class="stock_count"><?= htmlspecialchars($row['product_stock']); ?></span>
                             </div>
                         </div>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 <?php else: ?>
                     <p class="no_products_msg">No products found.</p>
                 <?php endif; ?>
