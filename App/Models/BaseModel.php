@@ -31,15 +31,15 @@ abstract class BaseModel
     }
 
     /**
-     * serializes the model's attributes and relations into a string representation.
-     * @return string The serialized string representation of the model.
+     * serializes the model's attributes and relations into a array representation.
+     * @return array The serialized array representation of the model.
      */
-    public function __serialize(): string
+    public function __serialize(): array
     {
-        return serialize([
+        return [
             'attributes' => $this->attributes,
             'relations' => $this->relations,
-        ]);
+        ];
     }
 
     /**
