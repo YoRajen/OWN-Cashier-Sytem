@@ -6,8 +6,7 @@ require_once __DIR__ . '/bootstrap.php';
 
 // Already logged in (session or remember-me cookie)? Go straight to the cashier.
 if (is_logged_in()) {
-    header('Location: index.php');
-    exit;
+    redirect('index.php');
 }
 
 const MAX_FAILS = 5;     // failed attempts before a temporary lock
@@ -32,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (auth()->authenticate($username, $password, $remember)) {
                 session_regenerate_id(true); // prevent session fixation
                 unset($_SESSION['fails'], $_SESSION['lock_until']);
-                header('Location: index.php');
+                redirect('login.php');
                 exit;
             }
 

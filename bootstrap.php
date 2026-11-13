@@ -7,6 +7,13 @@ use App\Services\DatabaseConnection;
 
 require_once __DIR__ . '/autoload.php';
 
+// Reject URLs like /login.php/anything (Apache's PATH_INFO). They break relative
+// links and redirects, and are never needed by this app.
+if (!empty($_SERVER['PATH_INFO'])) {
+    http_response_code(404);
+    exit('Not found');
+}
+
 // Secure session cookie settings (must be set before session_start)
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
@@ -20,6 +27,36 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 DatabaseConnection::initialize();
+
+/** URL path of the project folder, e.g. "/OWN-Cashier-Sytem" (empty if at web root).
+ * @return string
+ */
+function base_path(): string
+{
+    static $base = null;
+    if ($base !== null) {
+        return $base;
+    }
+    $root = str_replace('\\', '/', (string) realpath((string) ($_SERVER['DOCUMENT_ROOT'] ?? '')));
+    $dir  = str_replace('\\', '/', __DIR__); // bootstrap.php lives in the project root
+ 
+    if ($root !== '' && stripos($dir, $root) === 0) {
+        $base = rtrim(substr($dir, strlen($root)), '/');
+    } else {
+        $base = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '')), '/');
+    }
+    return $base;
+}
+ 
+/** Redirect to a project-relative path such as "login.php" using an absolute URL path.
+ * @param string $path The relative path to redirect to.
+ * @return never
+ */
+function redirect(string $path): never
+{
+    header('Location: ' . base_path() . '/' . ltrim($path, '/'));
+    exit;
+}
 
 /** The Authentication service bound to the shared DB connection.
  *  @return Authentication
@@ -80,10 +117,9 @@ function require_login(bool $json = false): void
         http_response_code(401);
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'message' => 'Session expired. Please log in again.']);
-    } else {
-        header('Location: login.php');
+        exit;
     }
-    exit;
+    redirect('login.php');
 }
 
 /** Guard by role, e.g. require_role('admin'). Roles live in users.role.
