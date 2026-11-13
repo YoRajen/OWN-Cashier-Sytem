@@ -1,6 +1,6 @@
 <?php
     require_once __DIR__ . '/bootstrap.php';
-    require_login();
+    require_role('cashier');
 
     use App\Models\Categories;
     use App\Models\Products;
@@ -112,7 +112,7 @@
             </div>
         </div>
     </div>
-    <script src="/assets/js/script.js"/>
+    <script src="/assets/js/script.js"></script>
 </body>
 
 </html>

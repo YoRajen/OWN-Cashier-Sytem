@@ -14,6 +14,7 @@ USE cashier_system;
 -- Drop in dependency order (safe to re-run during development)
 -- WARNING: this deletes existing data in these tables.
 -- ---------------------------------------------------------------------
+DROP TABLE IF EXISTS activity_logs;
 DROP TABLE IF EXISTS token_credentials;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS categories;
@@ -86,6 +87,37 @@ CREATE TABLE token_credentials (
         FOREIGN KEY (user_id) REFERENCES users (id)
         ON UPDATE CASCADE
         ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------
+-- activity_logs
+-- Append-only audit trail shown on logs.php (admin only).
+-- The app should only INSERT here (and purge old rows by retention policy),
+-- never UPDATE. JSON is native in MySQL 5.7+ and an alias of LONGTEXT in MariaDB.
+-- ---------------------------------------------------------------------
+CREATE TABLE activity_logs (
+    id          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    user_id     INT UNSIGNED    NULL COMMENT 'NULL for guests, failed logins and system events',
+    username    VARCHAR(50)     NULL COMMENT 'Snapshot, so the log stays readable if the user is renamed or deleted',
+    level       ENUM('info','warning','error') NOT NULL DEFAULT 'info',
+    action      VARCHAR(50)     NOT NULL COMMENT 'e.g. login.success, login.failed, logout, user.create, product.update, checkout.success',
+    entity_type VARCHAR(50)     NULL COMMENT 'e.g. user, product, category, sale',
+    entity_id   VARCHAR(50)     NULL COMMENT 'Products use string ids such as DR001',
+    description VARCHAR(500)    NULL,
+    details     JSON            NULL COMMENT 'Extra data such as old/new values. Never passwords or tokens',
+    ip_address  VARCHAR(45)     NULL COMMENT 'Long enough for IPv6',
+    user_agent  VARCHAR(255)    NULL,
+    created_at  TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY idx_logs_created (created_at),
+    KEY idx_logs_user (user_id, created_at),
+    KEY idx_logs_action (action, created_at),
+    KEY idx_logs_entity (entity_type, entity_id),
+    KEY idx_logs_level (level, created_at),
+    CONSTRAINT fk_logs_user
+        FOREIGN KEY (user_id) REFERENCES users (id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =====================================================================

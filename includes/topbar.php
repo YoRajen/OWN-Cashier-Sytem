@@ -23,10 +23,13 @@ $tbIsAdmin = ($tbUser['role'] ?? '') === 'admin';
 $tbNav = $tbIsAdmin
     ? [
         ['label' => 'Account Management', 'file' => 'accounts.php'],
+        ['label' => 'Product Management', 'file' => 'products.php'],
+        ['label' => 'Log Management',     'file' => 'logs.php'],
     ]
     : [
         ['label' => 'Dashboard',          'file' => 'dashboard.php'],
         ['label' => 'Product Management', 'file' => 'products.php'],
+        ['label' => 'Cashier Screen',     'file' => 'index.php'],
     ];
 
 $tbHome    = $tbIsAdmin ? 'accounts.php' : 'index.php';
