@@ -45,19 +45,7 @@
 </head>
 
 <body>
-    <div class="top_bar">
-        <div class="brand_container">
-            <span class="title">OWN Cashier</span>
-        </div>
-        <div class="clock_display">
-            <span class="date_time" id="date_time"></span>
-        </div>
-        <form method="post" action="logout.php">
-            <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrf_token()) ?>">
-            <span><?= htmlspecialchars($_SESSION['user']['username']) ?></span>
-            <button type="submit" class="category_btn">Log out</button>
-        </form>
-    </div>
+    <?php require __DIR__ . '/includes/topbar.php'; ?>
     <div class="main_container">
         <div class="products_container">
             <div class="products_header">

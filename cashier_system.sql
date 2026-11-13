@@ -106,5 +106,5 @@ INSERT INTO products (product_id, product_name, product_price, product_stock, ca
     ('SN002', 'Chocolate Bar',      12000,   45, (SELECT category_id FROM categories WHERE category_code = 'SN'));
 
 
-INSERT INTO users (username, password, email) VALUES
-    ('admin', '$2y$10$3uxjLbLgDiLUtdELRU.vuuE2JAvdRngNyIVgP490S6T9nRgvJ53Qq', 'admin@example.com');
+INSERT INTO users (username, password, email, role) VALUES
+    ('admin', '$2y$10$3uxjLbLgDiLUtdELRU.vuuE2JAvdRngNyIVgP490S6T9nRgvJ53Qq', 'admin@example.com', 'admin');
