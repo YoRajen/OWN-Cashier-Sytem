@@ -12,7 +12,7 @@ use App\Services\DatabaseConnection;
 class TokenCredential extends BaseModel
 {
     /** @var array|null $tokenData An associative array to hold token data after retrieval from the database */
-    private ?array $tokenData;
+    private ?array $tokenData = null;
     /** @var int $lastUpdatedTokenData A timestamp indicating the last time token data was updated */
     private int $lastUpdatedTokenData = 0;
 
@@ -163,9 +163,7 @@ class TokenCredential extends BaseModel
      */
     public function isTokenValid(string $token): bool
     {
-       $result = array_filter($this->getCachedTokens(), function ($tokenData) use ($token) {
-            return $tokenData['token'] === $token;
-        });
+       $result = array_values(array_filter($this->getCachedTokens(), fn($t) => $t['token'] === $token));
 
         return !empty($result) && (time() - strtotime($result[0]['created_at'])) < self::$TOKEN_EXPIRATION;
     }

@@ -1,0 +1,105 @@
+/* ==========================================================
+   Top bar navigation (extends .top_bar from styles.css)
+   Own class names (.nav_link ...) on purpose: script.js toggles
+   the .category_btn class globally, so it must not be reused here.
+   ========================================================== */
+
+.top_bar.top_bar_nav {
+    flex-wrap: wrap;
+    gap: 10px 24px;
+}
+
+.brand_link {
+    text-decoration: none;
+}
+
+.topbar_nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-right: auto; /* pushes clock / user / logout to the far right */
+}
+
+.nav_link {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    text-decoration: none;
+    color: var(--color-slate);
+    background-color: var(--color-white);
+    border: var(--retro-border);
+    border-radius: 5px;
+    padding: 7px 14px;
+    cursor: pointer;
+    box-shadow: var(--retro-shadow-sm);
+    transition: all 0.1s ease;
+    user-select: none;
+}
+
+.nav_link:hover {
+    background-color: rgba(254, 127, 45, 0.15);
+    color: var(--color-black);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--color-black);
+}
+
+.nav_link.is_current {
+    background-color: var(--color-orange);
+    color: var(--color-black);
+    box-shadow: 1px 1px 0 var(--color-black);
+    transform: translate(2px, 2px); /* pressed key = current page */
+}
+
+.nav_button {
+    line-height: inherit;
+}
+
+.topbar_right {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+}
+
+/* Hide the clock box on pages where script.js isn't filling it in */
+.clock_display:has(.date_time:empty) {
+    display: none;
+}
+
+.topbar_user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-white);
+}
+
+.topbar_name {
+    font-weight: 700;
+}
+
+.topbar_role {
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-black);
+    background-color: var(--color-orange);
+    border: 2px solid var(--color-black);
+    border-radius: 4px;
+}
+
+.topbar_logout {
+    margin: 0;
+}
+
+@media (max-width: 540px) {
+    .topbar_nav,
+    .topbar_right {
+        width: 100%;
+    }
+}

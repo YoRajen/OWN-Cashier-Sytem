@@ -49,7 +49,7 @@ function renderCart() {
             </div>
             <div class="cart_item_remove">
                 <button type="button" class="remove_btn" onclick="removeFromCart('${item.id}')" title="Remove item">
-                    <img src="assets/trash-svgrepo-com.svg" alt="Remove" class="trash_icon">
+                    <img src="./assets/image/trash-svgrepo-com.svg" alt="Remove" class="trash_icon">
                 </button>
             </div>
         `;

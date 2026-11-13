@@ -23,7 +23,7 @@ class Authentication
      */
     public function __construct(DatabaseConnection|null $dbConnection)
     {
-        $this->dbConnection = $dbConnection ?? DatabaseConnection::getConnection();
+        $this->dbConnection = $dbConnection ?? DatabaseConnection::getConnectionInstance();
     
     }
 
@@ -62,17 +62,24 @@ class Authentication
      */
     public function checkTokenAuthentication(): bool
     {
-        if (isset($_COOKIE['rememberme']) && isset($_COOKIE['token'])) {
-            $tokenCredentialModel = new TokenCredential($this->dbConnection);
-            if ($tokenCredentialModel->isTokenValid($_COOKIE['token'])) {
-                $userModel = new Users($this->dbConnection);
-                $this->userData = $userModel->getUserById($tokenCredentialModel->getUserIdByToken($_COOKIE['token']));
-                $this->userData['password'] = null; // Remove password from user data for security reasons
-                $_SESSION['user'] = $this->userData; // Store user data in session
+        if (!isset($_COOKIE["rememberme"], $_COOKIE['token'])){
+            return false;
+        }
+
+        $tokens = new TokenCredential($this->dbConnection);
+        $userId = $tokens->getUserIdByToken($_COOKIE['token']);
+
+        if ($userId !== null && $tokens->isTokenValid($_COOKIE['token'])) {
+            $user = (new Users($this->dbConnection))->getUserById($userId);
+            if ($user !== null) {
+                $user['password'] = null; // Remove password from user data for security reasons
+                $_SESSION['user'] = $user; // Store user data in session
                 return true;
-            } else {
-                $tokenCredentialModel->deleteToken($tokenCredentialModel->getUserIdByToken($_SESSION['token']));
             }
+        }
+
+        if ($userId !== null) {
+            $tokens->deleteToken($userId); // Delete the token if it's invalid or expired
         }
         return false;
     }

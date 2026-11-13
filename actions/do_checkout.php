@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/../bootstrap.php';
+require_login(true); // balas JSON 401 jika belum login
+
 use App\Models\Products;
 use App\Services\DatabaseConnection;
 
 header('Content-Type: application/json');
 
-require_once __DIR__ . '/../autoload.php';
 
 /**
  * Send a JSON response and stop the script.

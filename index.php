@@ -1,5 +1,7 @@
 <?php
-    require 'autoload.php';
+    require_once __DIR__ . '/bootstrap.php';
+    require_role('cashier');
+
     use App\Models\Categories;
     use App\Models\Products;
     use App\Services\DatabaseConnection;
@@ -39,18 +41,11 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=<?= time(); ?>">
+    <link rel="stylesheet" href="<?= $tbEsc($tbBase) ?>/assets/css/styles.css?v=<?= (int) @filemtime(__DIR__ . '/assets/css/topbar.css') ?>">
 </head>
 
 <body>
-    <div class="top_bar">
-        <div class="brand_container">
-            <span class="title">OWN Cashier</span>
-        </div>
-        <div class="clock_display">
-            <span class="date_time" id="date_time"></span>
-        </div>
-    </div>
+    <?php require __DIR__ . '/includes/topbar.php'; ?>
     <div class="main_container">
         <div class="products_container">
             <div class="products_header">
@@ -117,10 +112,7 @@
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="/assets/js/script.js"></script>
 </body>
 
 </html>
-<?php
-$conn->close();
-?>
