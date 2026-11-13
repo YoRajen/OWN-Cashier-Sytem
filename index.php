@@ -1,5 +1,7 @@
 <?php
-    require 'autoload.php';
+    require_once __DIR__ . '/bootstrap.php';
+    require_login();
+
     use App\Models\Categories;
     use App\Models\Products;
     use App\Services\DatabaseConnection;
@@ -50,6 +52,11 @@
         <div class="clock_display">
             <span class="date_time" id="date_time"></span>
         </div>
+        <form method="post" action="logout.php">
+            <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrf_token()) ?>">
+            <span><?= htmlspecialchars($_SESSION['user']['username']) ?></span>
+            <button type="submit" class="category_btn">Log out</button>
+        </form>
     </div>
     <div class="main_container">
         <div class="products_container">

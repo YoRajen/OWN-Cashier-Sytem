@@ -61,6 +61,7 @@ CREATE TABLE users (
     username   VARCHAR(50)   NOT NULL,
     password   VARCHAR(255)  NOT NULL COMMENT 'Store password_hash() output only, never plain text',
     email      VARCHAR(255)  NOT NULL,
+    role       ENUM("admin","cashier") NOT NULL DEFAULT "cashier",
     created_at TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
@@ -104,9 +105,6 @@ INSERT INTO products (product_id, product_name, product_price, product_stock, ca
     ('SN001', 'Potato Chips',       10000,   60, (SELECT category_id FROM categories WHERE category_code = 'SN')),
     ('SN002', 'Chocolate Bar',      12000,   45, (SELECT category_id FROM categories WHERE category_code = 'SN'));
 
--- Users: the password MUST be a hash. Generate one with:
---   php -r "echo password_hash('your-password', PASSWORD_DEFAULT);"
--- then paste it below and uncomment.
---
--- INSERT INTO users (username, password, email) VALUES
---     ('admin', 'PASTE_HASH_HERE', 'admin@example.com');
+
+INSERT INTO users (username, password, email) VALUES
+    ('admin', '$2y$10$3uxjLbLgDiLUtdELRU.vuuE2JAvdRngNyIVgP490S6T9nRgvJ53Qq', 'admin@example.com');
