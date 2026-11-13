@@ -34,7 +34,7 @@ $tbCurrent = basename($_SERVER['SCRIPT_NAME'] ?? '');
 $tbBase    = base_path();
 $tbEsc     = static fn (string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 ?>
-<link rel="stylesheet" href="<?= $tbEsc($tbBase) ?>/assets/topbar.css?v=<?= (int) @filemtime(__DIR__ . '/../assets/topbar.css') ?>">
+<link rel="stylesheet" href="<?= $tbEsc($tbBase) ?>/assets/css/topbar.css?v=<?= (int) @filemtime(__DIR__ . '/../assets/css/topbar.css') ?>">
 
 <header class="top_bar top_bar_nav">
     <div class="brand_container">
