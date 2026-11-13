@@ -6,18 +6,18 @@ Legend: `[x]` done, `[ ]` to do.
 
 These are bugs in the existing backend that break login, "remember me" or the cashier screen.
 
-- [ ] `DatabaseConnection`: replace `$this->connection` / `$this->instance` with `self::$connection` / `self::$instance`
+- [x] `DatabaseConnection`: replace `$this->connection` / `$this->instance` with `self::$connection` / `self::$instance`
       (`query()`, `getLastInsertId()`, `__destruct()`)
-- [ ] `TokenCredential`: give `$tokenData` a default (`private ?array $tokenData = null;`)
-- [ ] `TokenCredential::isTokenValid()`: wrap `array_filter` in `array_values()` before reading `$result[0]`
+- [x] `TokenCredential`: give `$tokenData` a default (`private ?array $tokenData = null;`)
+- [x] `TokenCredential::isTokenValid()`: wrap `array_filter` in `array_values()` before reading `$result[0]`
 - [ ] `Authentication`: rewrite `checkTokenAuthentication()` (uses undefined `$_SESSION['token']`,
       and logs in a ghost user if the account was deleted) and use `getConnectionInstance()` in the constructor
-- [ ] `BaseModel::__serialize()` must return `array`
-- [ ] `LoadEnv::fromFile()` must accept a file path, and skip lines without `=`
-- [ ] `index.php`: sort categories by `category_id`, not `id`
-- [ ] Add the `role` column to `users` (`ALTER TABLE ...`, see README)
-- [ ] Create the first admin account (see README, step 4)
-- [ ] Existing database: run the `CREATE TABLE IF NOT EXISTS activity_logs` statement from the README
+- [x] `BaseModel::__serialize()` must return `array`
+- [x] `LoadEnv::fromFile()` must accept a file path, and skip lines without `=`
+- [x] `index.php`: sort categories by `category_id`, not `id`
+- [x] Add the `role` column to `users` (`ALTER TABLE ...`, see README)
+- [x] Create the first admin account (see README, step 4)
+- [x] Existing database: run the `CREATE TABLE IF NOT EXISTS activity_logs` statement from the README
 
 ## 2. Done
 
@@ -34,12 +34,12 @@ These are bugs in the existing backend that break login, "remember me" or the ca
 
 ## 3. Wire up the top bar and access control
 
-- [ ] Include `includes/topbar.php` in `index.php` (replace the old `.top_bar` block) and remove the old logout form if you added one
-- [ ] `index.php`: `require_login();` at the top
-- [ ] `actions/do_checkout.php`: `require_login(true);`
-- [ ] Decide what an admin sees at `index.php` (currently admins land on `accounts.php`; the top bar offers no cashier link)
-- [ ] `accounts.php` and `logs.php`: `require_role('admin');`
-- [ ] `dashboard.php` and `products.php`: `require_login();` and send admins to `accounts.php`
+- [x] Include `includes/topbar.php` in `index.php` (replace the old `.top_bar` block) and remove the old logout form if you added one
+- [x] `index.php`: `require_login();` at the top
+- [x] `actions/do_checkout.php`: `require_login(true);`
+- [x] Decide what an admin sees at `index.php` (currently admins land on `accounts.php`; the top bar offers no cashier link)
+- [x] `accounts.php` and `logs.php`: `require_role('admin');`
+- [x] `dashboard.php` and `products.php`: `require_login();` and send admins to `accounts.php`
 - [ ] Move `cashier_system.sql` into `database/`
 
 ## 4. Account Management (admin)
