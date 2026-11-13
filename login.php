@@ -6,7 +6,11 @@ require_once __DIR__ . '/bootstrap.php';
 
 // Already logged in (session or remember-me cookie)? Go straight to the cashier.
 if (is_logged_in()) {
-    redirect('index.php');
+    if (current_user()['role'] === 'admin') {
+        redirect('admin.php');
+    } else {
+        redirect('index.php');
+    }
 }
 
 const MAX_FAILS = 5;     // failed attempts before a temporary lock
