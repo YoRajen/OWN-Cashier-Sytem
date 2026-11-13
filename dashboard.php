@@ -38,5 +38,6 @@ require_role("cashier");
 </head>
 
 <body>
+    <?php require __DIR__ . '/includes/topbar.php'; ?>
 </body>
 </html>

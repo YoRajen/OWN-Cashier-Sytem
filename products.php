@@ -37,5 +37,6 @@ require_login();
 </head>
 
 <body>
+    <?php require __DIR__ . '/includes/topbar.php'; ?>
 </body>
 </html>
