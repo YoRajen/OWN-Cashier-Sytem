@@ -7,6 +7,9 @@ use App\Services\DatabaseConnection;
 
 require_once __DIR__ . '/autoload.php';
 
+$tbBase    = base_path();
+$tbEsc     = static fn (string $s): string => htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
+
 // Reject URLs like /login.php/anything (Apache's PATH_INFO). They break relative
 // links and redirects, and are never needed by this app.
 if (!empty($_SERVER['PATH_INFO'])) {

@@ -41,7 +41,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=<?= time(); ?>">
+    <link rel="stylesheet" href="<?= $tbEsc($tbBase) ?>/assets/css/styles.css?v=<?= (int) @filemtime(__DIR__ . '/assets/css/topbar.css') ?>">
 </head>
 
 <body>
@@ -112,7 +112,7 @@
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="/assets/js/script.js"/>
 </body>
 
 </html>
